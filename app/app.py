@@ -1,26 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for
-import hashlib
+from user import User
 
 app = Flask(__name__)
-
-class User:
-    def __init__(self, username: str, password: str):
-        self._username = None
-        self._hashed_password = None
-
-        if username:
-            self._username = username
-
-        if password:
-            self._hashed_password = hashlib.sha512(password.encode()).hexdigest()
-
-    def login(self, login: str, password: str):
-        hash = hashlib.sha512(password.encode())
-
-        if self._username == login and self._hashed_password == hash.hexdigest():
-            return True
-        else:
-            return False
 
 u = User('Admin', 'Admin')
 
@@ -46,4 +27,4 @@ def failure():
     return render_template("failure.html")
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(host='127.0.0.1', port=5000)
