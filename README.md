@@ -3,7 +3,9 @@
 W obecnej wersji utworzyłem panel do logowania, 
 a także klasę użytkownika, która posłuży nam 
 jako klasa bazowa dla reszty użytkowników (aktorów)
-korzystających z systemu.
+korzystających z systemu. 
+
+#### Apka ma wygląd podobny do Githuba.
 
 ### Aplikacja działa:
 * lokalnie
