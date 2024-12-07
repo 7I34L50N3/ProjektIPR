@@ -12,7 +12,8 @@ class User:
 
     def login(self, login: str, password: str):
         hash = hashlib.sha512(password.encode())
-
+        print(hash.hexdigest())
+        print(self._hashed_password)
         if self._username == login and self._hashed_password == hash.hexdigest():
             return True
         else:
