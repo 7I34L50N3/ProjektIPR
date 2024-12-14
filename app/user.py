@@ -1,19 +1,19 @@
 import hashlib
 class User:
     def __init__(self, username: str, password: str):
-        self._username = None
-        self._hashed_password = None
+        self.__username = None
+        self.__hashed_password = None
 
         if username:
-            self._username = username
+            self.__username = username
 
         if password:
-            self._hashed_password = hashlib.sha512(password.encode()).hexdigest()
+            self.__hashed_password = hashlib.sha512(password.encode()).hexdigest()
 
     def login(self, login: str, password: str):
         hash = hashlib.sha512(password.encode())
 
-        if self._username == login and self._hashed_password == hash.hexdigest():
+        if self.__username == login and self.__hashed_password == hash.hexdigest():
             return True
         else:
             return False

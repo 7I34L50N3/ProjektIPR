@@ -20,7 +20,7 @@ def login():
 
 @app.route("/success")
 def success():
-    return render_template("success.html")
+    return render_template("vue_success.html")
 
 @app.route("/failure")
 def failure():
