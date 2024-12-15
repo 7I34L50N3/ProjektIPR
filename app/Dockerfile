@@ -1,17 +1,18 @@
-# App Dockerfile
-FROM python:3.12-slim
+# Użyj oficjalnego obrazu Pythona
+FROM python:3.9-slim
 
-ENV FLASK_APP=app.py
-ENV FLASK_ENV=development
-
+# Ustaw katalog roboczy w kontenerze
 WORKDIR /app
 
-COPY requirements.txt .
-
-RUN pip install --no-cache-dir -r requirements.txt
-
+# Skopiuj pliki projektu do kontenera
 COPY . /app
 
+# Zainstaluj zależności Pythona
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Otwórz port dla Flask
 EXPOSE 5000
 
-CMD ["flask", "run", "--host=0.0.0.0"]
+# Komenda startowa
+CMD ["python", "app.py"]
+
