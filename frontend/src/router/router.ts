@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import SuccessView from './components/SuccessView.vue';
+import SuccessView from '@/components/SuccessView.vue';
 
 const routes = [
     { path: '/', component: SuccessView },

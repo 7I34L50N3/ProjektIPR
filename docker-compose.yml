@@ -1,4 +1,4 @@
-version: '3.7'
+version: '3.8'
 
 services:
   app:
@@ -10,3 +10,18 @@ services:
       - ./app:/app
     environment:
       - FLASK_APP=app.py
+      - FLASK_ENV=development
+    command: flask run --host=0.0.0.0
+
+  vue:
+    build: ./frontend
+    platform: linux/amd64
+    container_name: vue
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./frontend:/app/frontend
+      - /app/frontend/node_modules
+    command: npm run dev
+    environment:
+      - NODE_ENV=development
