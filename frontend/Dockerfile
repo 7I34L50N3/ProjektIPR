@@ -1,21 +1,20 @@
-# Użyj oficjalnego obrazu Node.js
-FROM node:18
+# Vue Dockerfile
+FROM node:20-alpine
 
-# Ustaw katalog roboczy
-WORKDIR /app
-
-# Skopiuj pliki projektu do kontenera
-COPY . /app
-
-# Zainstaluj zależności
+# Ustawienie katalogu roboczego
+WORKDIR /app/frontend
+COPY package*.json ./
 RUN npm install
+#RUN npm install rollup --save-dev
 
-# Zbuduj projekt
+# Kopiowanie całego katalogu źródłowego
+COPY . .
+
+# Budowanie projektu
 RUN npm run build
 
-# Serwuj aplikację za pomocą serwera npm serve
-RUN npm install -g serve
-CMD ["serve", "-s", "dist"]
-
-# Otwórz port
+# Eksponowanie portu 8080
 EXPOSE 8080
+
+# Komenda do uruchomienia Vue.js
+CMD ["npm", "run", "dev"]
