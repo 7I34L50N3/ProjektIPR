@@ -1,30 +1,70 @@
-from flask import Flask, render_template, request, redirect, url_for
-from user import User
+# from flask import Flask, render_template, request, redirect, url_for
+# from user import User
+#
+# app = Flask(__name__)
+#
+# u = User('Admin', 'Admin')
+#
+# @app.route("/", methods=["GET", "POST"])
+# def login():
+#     if request.method == "POST":
+#         username = request.form.get("username")
+#         password = request.form.get("password")
+#
+#         if u.login(username, password):
+#             return redirect(url_for('success'))
+#         else:
+#             return redirect(url_for('failure'))
+#
+#     return render_template("login.html")
+#
+# @app.route("/success")
+# def success():
+#     return render_template("vue_success.html")
+#
+# @app.route("/failure")
+# def failure():
+#     return render_template("failure.html")
+#
+# if __name__ == "__main__":
+#     app.run(host='127.0.0.1', port=5000)
+
+from flask import Flask
+from flask_sqlalchemy import SQLAlchemy
+import os
 
 app = Flask(__name__)
 
-u = User('Admin', 'Admin')
+# Poprawna konfiguracja połączenia z MySQL
+app.config['SQLALCHEMY_DATABASE_URI'] = (
+    f"mysql+pymysql://{os.getenv('DB_USER', 'user')}:{os.getenv('DB_PASSWORD', 'password')}"
+    f"@{os.getenv('DB_HOST', 'db')}:3306/{os.getenv('DB_NAME', 'app_db')}"
+)
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
-@app.route("/", methods=["GET", "POST"])
-def login():
-    if request.method == "POST":
-        username = request.form.get("username")
-        password = request.form.get("password")
+db = SQLAlchemy(app)
 
-        if u.login(username, password):
-            return redirect(url_for('success'))
-        else:
-            return redirect(url_for('failure'))
+class User(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(80), unique=True, nullable=False)
 
-    return render_template("login.html")
+    def __repr__(self):
+        return f'<User {self.username}>'
 
-@app.route("/success")
-def success():
-    return render_template("vue_success.html")
+def create_tables():
+    db.create_all()
 
-@app.route("/failure")
-def failure():
-    return render_template("failure.html")
+@app.route('/')
+def index():
+    return "Flask działa poprawnie i jest połączony z MySQL!"
+
+@app.route('/add_user/<username>')
+def add_user(username):
+    new_user = User(username=username)
+    db.session.add(new_user)
+    db.session.commit()
+    return f"Użytkownik {username} został dodany do bazy danych!"
 
 if __name__ == "__main__":
-    app.run(host='127.0.0.1', port=5000)
+    create_tables()
+    app.run(host='0.0.0.0', port=5000)
