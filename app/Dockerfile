@@ -1,18 +1,28 @@
-# Użyj oficjalnego obrazu Pythona
-FROM python:3.9-slim
+# App Dockerfile
+FROM python:3.12-bullseye
 
-# Ustaw katalog roboczy w kontenerze
+ENV FLASK_APP=app.py
+ENV FLASK_ENV=development
+
 WORKDIR /app
 
-# Skopiuj pliki projektu do kontenera
-COPY . /app
+# Instalacja brakujących pakietów
+RUN apt-get update && apt-get install -y \
+    apt-utils \
+    gcc \
+    default-libmysqlclient-dev \
+    pkg-config \
+    build-essential \
+    tzdata \
+    curl \
+    && rm -rf /var/lib/apt/lists/*
 
-# Zainstaluj zależności Pythona
+COPY requirements.txt .
+
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Otwórz port dla Flask
+COPY . /app
+
 EXPOSE 5000
 
-# Komenda startowa
-CMD ["python", "app.py"]
-
+CMD ["flask", "run", "--host=0.0.0.0"]

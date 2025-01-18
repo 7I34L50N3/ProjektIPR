@@ -20,7 +20,13 @@ korzystających z systemu.
 * instalujemy Dockera (np. Docker desktop)
 * uruchamiamy instancję terminala w Pycharm
 
-* uruchamiamy komendę:
-    ```bash
-    docker-compose up --build
-    ```
+### Korzystanie z aplikacji:
+* uruchamiamy komendą:
+  ```bash
+  docker-compose up --build
+  ```
+  
+* po wyłączeniu usuwamy kontener:
+  ```bash
+  docker-compose down -v
+  ```

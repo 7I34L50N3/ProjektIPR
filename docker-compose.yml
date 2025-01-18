@@ -11,7 +11,25 @@ services:
     environment:
       - FLASK_APP=app.py
       - FLASK_ENV=development
+      - DB_HOST=db
+      - DB_USER=user
+      - DB_PASSWORD=password
+      - DB_NAME=app_db
     command: flask run --host=0.0.0.0
+
+  db:
+    image: mysql:8.0
+    container_name: mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: app_db
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
 
   vue:
     build: ./frontend
@@ -25,3 +43,6 @@ services:
     command: npm run dev
     environment:
       - NODE_ENV=development
+
+volumes:
+  mysql_data:
