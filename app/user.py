@@ -1,5 +1,5 @@
 import hashlib
-class User:
+class UserRepo:
     def __init__(self, username: str, password: str):
         self._username = None
         self._hashed_password = None
