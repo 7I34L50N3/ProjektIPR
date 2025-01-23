@@ -1,18 +1,28 @@
 import hashlib
 
-from flask import Flask, render_template, request, redirect, url_for
-class LoginApi:
+from flask import Flask, render_template, request, redirect, url_for, flash
+
+class AppControler:
     def __init__(self):
         self.app = Flask(__name__)
-        self.add_routes()
+        self.modules = []
+
+    def add_module(self, module):
+        self.modules.append(module)
+        module.register_routes(self.app)
 
     def run(self, *args, **kwargs):
         self.app.run(*args, **kwargs)
 
-    def add_routes(self):
-        self.app.add_url_rule('/', 'login', self.login, methods=['GET', 'POST'])
-        self.app.add_url_rule('/success', 'success', self.success, methods=['GET'])
-        self.app.add_url_rule('/failure', 'failure', self.failure, methods=['GET'])
+
+class LoginApi:
+    def __init__(self):
+        self.name = "LoginApi"
+
+    def register_routes(self, app):
+        app.secret_key = "secret_key"
+        app.add_url_rule('/', 'login', self.login, methods=['GET', 'POST'])
+        app.add_url_rule('/success', 'success', self.success, methods=['GET'])
 
     def login(self):
         if request.method == "POST":
@@ -24,7 +34,7 @@ class LoginApi:
             if username == "Admin" and password == "Admin":
                 return redirect(url_for('success'))
             else:
-                return redirect(url_for('failure'))
+                flash("Nieprawidłowy login lub hasło", "error")
 
         return render_template("login.html")
 
@@ -37,5 +47,6 @@ class LoginApi:
 
 
 if __name__ == "__main__":
-    app = LoginApi()
+    app = AppControler()
+    app.add_module(LoginApi())
     app.run(debug=False, port=5000)
