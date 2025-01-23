@@ -44,8 +44,13 @@ class LoginApi:
         if not user_id:
             flash("Musisz być zalogowany, aby uzyskać dostęp do tej strony.", "error")
             return redirect(url_for('login'))
-
-        return render_template("success.html", username=user_id)
+        data = {
+            'username': user_id,
+            'students': 50,
+            'teachers': 4,
+            'groups': 5
+        }
+        return render_template("success.html", **data)
 
     def logout(self):
         session.pop('user_id', None)  # Usuń użytkownika z sesji
