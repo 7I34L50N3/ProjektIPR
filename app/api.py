@@ -30,7 +30,7 @@ class LoginApi:
             print(f'Username: {username} | Password: {password}')
 
             if username == "Admin" and password == "Admin":
-                return redirect(url_for('success'))
+                return redirect(url_for('admin_dashboard'))
             else:
                 flash("Nieprawidłowy login lub hasło", "error")
 
@@ -42,3 +42,14 @@ class LoginApi:
 
     def failure(self):
         return render_template("failure.html")
+
+
+class AdminApi:
+    def __init__(self):
+        self.name = "AdminAPI"
+
+    def register_routes(self, app):
+        app.add_url_rule('/dashboard', 'admin_dashboard', self.admin_dashboard, methods=['GET'])
+
+    def admin_dashboard(self):
+        return render_template("success.html")
