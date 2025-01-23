@@ -1,35 +1,5 @@
-# from flask import Flask, render_template, request, redirect, url_for
-# from user import User
-#
-# app = Flask(__name__)
-#
-# u = User('Admin', 'Admin')
-#
-# @app.route("/", methods=["GET", "POST"])
-# def login():
-#     if request.method == "POST":
-#         username = request.form.get("username")
-#         password = request.form.get("password")
-#
-#         if u.login(username, password):
-#             return redirect(url_for('success'))
-#         else:
-#             return redirect(url_for('failure'))
-#
-#     return render_template("login.html")
-#
-# @app.route("/success")
-# def success():
-#     return render_template("vue_success.html")
-#
-# @app.route("/failure")
-# def failure():
-#     return render_template("failure.html")
-#
-# if __name__ == "__main__":
-#     app.run(host='127.0.0.1', port=5000)
-
-from flask import Flask
+from flask import Flask, render_template, request, redirect, url_for
+from user import UserRepo
 from flask_sqlalchemy import SQLAlchemy
 import os
 
@@ -44,19 +14,38 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
 
-class User(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(80), unique=True, nullable=False)
+u = UserRepo('Admin', 'Admin')
 
-    def __repr__(self):
-        return f'<User {self.username}>'
+# class User(db.Model):
+#     id = db.Column(db.Integer, primary_key=True)
+#     username = db.Column(db.String(80), unique=True, nullable=False)
+#
+#     def __repr__(self):
+#         return f'<User {self.username}>'
 
 def create_tables():
     db.create_all()
 
-@app.route('/')
-def index():
-    return "Flask działa poprawnie i jest połączony z MySQL!"
+@app.route("/", methods=["GET", "POST"])
+def login():
+    if request.method == "POST":
+        username = request.form.get("username")
+        password = request.form.get("password")
+
+        if u.login(username, password):
+            return redirect(url_for('success'))
+        else:
+            return redirect(url_for('failure'))
+
+    return render_template("login.html")
+
+@app.route("/success")
+def success():
+    return render_template("vue_success.html")
+
+@app.route("/failure")
+def failure():
+    return render_template("failure.html")
 
 @app.route('/add_user/<username>')
 def add_user(username):
