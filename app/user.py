@@ -2,15 +2,11 @@ from flask import Flask, request, redirect, url_for, flash, render_template, ses
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import Column, Integer, String, Table, ForeignKey
 from sqlalchemy.exc import OperationalError, NoResultFound
+from sqlalchemy.orm import relationship
+from Group import Group, GroupRepo
+from Global import app, db
 
-app = Flask(__name__)
 
-# Konfiguracja bazy danych
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:rootpassword@127.0.0.1:3307/app_db'
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-
-# Inicjalizacja SQLAlchemy
-db = SQLAlchemy(app)
 
 class User(db.Model):
     __tablename__ = 'users'
@@ -21,6 +17,9 @@ class User(db.Model):
     email = Column(String(100), nullable=False, unique=True)  # Dodano długość VARCHAR
     name = Column(String(50), nullable=False)  # Dodano długość VARCHAR
     surname = Column(String(50), nullable=False)  # Dodano długość VARCHAR
+
+    # Relacja wiele-do-wielu z grupami
+    groups = relationship('Group', secondary=user_group_association, back_populates='users')
 
     def logout(self):
         print(f"User {self.username} logged out.")
@@ -35,8 +34,18 @@ class User(db.Model):
             "username": self.username,
             "email": self.email,
             "name": self.name,
-            "surname": self.surname
+            "surname": self.surname,
+            "groups": [group.name for group in self.groups]  # Wyświetla nazwy grup
         }
+
+class Group(db.Model):
+    __tablename__ = 'groups'
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    name = Column(String(100), nullable=False, unique=True)  # Dodano długość VARCHAR
+
+    # Relacja wiele-do-wielu z użytkownikami
+    users = relationship('User', secondary=user_group_association, back_populates='groups')
 
 class UserRepo:
     _instance = None
@@ -91,10 +100,19 @@ class UserRepo:
 
 if __name__ == "__main__":
     with app.app_context():
+        # Tworzenie tabel
+        UserRepo.create_tables()
 
-        user_repo = UserRepo(db.session)
+        user_repo = UserRepo(db.session)  # Singleton
 
-        # Wyświetlenie wszystkich użytkowników
+
+        # Przypisywanie użytkowników do grup
+        user1 = user_repo.find_by_argument(username="john_doe")
+        group = GroupRepo().find_by_argument(name="Beginner English")
+        user1.groups.append(group1)
+        db.session.commit()
+
+        # Wyświetlenie wszystkich użytkowników i ich grup
         users = user_repo.find()
         for user in users:
             print(user.check_info())

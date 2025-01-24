@@ -3,15 +3,10 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.exc import OperationalError
 from sqlalchemy.sql import text
-app = Flask(__name__)
-
-# Konfiguracja bazy danych
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:rootpassword@127.0.0.1:3307/app_db'
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+from Global import app, db
 
 
-# Inicjalizacja SQLAlchemy
-db = SQLAlchemy(app)
+
 
 #grupa
 class Group(db.Model):
@@ -70,48 +65,48 @@ class GroupRepo:
         #zwraca wszystkie grupy
         return Group.query.all()
 
-# Tworzenie tabel i dodawanie przykładowej grupy
-def add_groups():
-    repo = GroupRepo()
-
-    # Dodajemy grupy "na sztywno"
-    groups_to_add = [
-        {"name": "Beginner English", "description": "Grupa dla początkujących"},
-        {"name": "Advanced English", "description": "Grupa zaawansowanego"},
-        {"name": "Beginer German", "description": "Grupa dla początkujacych"},
-        {"name": "Advanced German", "description": "Grupa zaawansowana"},
-        {"name": "Advanced china", "description": "Grupa zaawansowana"}
-
-    ]
-
-    for group_data in groups_to_add:
-        name = group_data['name']
-        description = group_data['description']
-
-        # Sprawdzenie, czy grupa już istnieje
-        if not repo.find_by_argument(name=name):
-            print(f"Dodawanie grupy: {name}")
-            repo.create(name=name, description=description)
-        else:
-            print(f"Grupa '{name}' już istnieje.")
-with app.app_context():
-    db.create_all()
-
-    # Uniwersalna flaga sterująca
-    ADD_GROUPS = os.getenv('ADD_GROUPS', 'true').lower() == 'true'
-
-    if ADD_GROUPS:
-        print("Dodawanie grup jest włączone. Dodajemy grupy...")
-        add_groups()
-    else:
-        print("Dodawanie grup jest wyłączone. Pomijamy ten krok.")
-
-    # Wyświetlenie wszystkich grup
-    print("Wszystkie grupy w bazie:")
-    repo = GroupRepo()
-    groups = repo.find()
-    for group in groups:
-        print(group)
+# # Tworzenie tabel i dodawanie przykładowej grupy
+# def add_groups():
+#     repo = GroupRepo()
+#
+#     # Dodajemy grupy "na sztywno"
+#     groups_to_add = [
+#         {"name": "Beginner English", "description": "Grupa dla początkujących"},
+#         {"name": "Advanced English", "description": "Grupa zaawansowanego"},
+#         {"name": "Beginer German", "description": "Grupa dla początkujacych"},
+#         {"name": "Advanced German", "description": "Grupa zaawansowana"},
+#         {"name": "Advanced china", "description": "Grupa zaawansowana"}
+#
+#     ]
+#
+#     for group_data in groups_to_add:
+#         name = group_data['name']
+#         description = group_data['description']
+#
+#         # Sprawdzenie, czy grupa już istnieje
+#         if not repo.find_by_argument(name=name):
+#             print(f"Dodawanie grupy: {name}")
+#             repo.create(name=name, description=description)
+#         else:
+#             print(f"Grupa '{name}' już istnieje.")
+# with app.app_context():
+#     db.create_all()
+#
+#     # Uniwersalna flaga sterująca
+#     ADD_GROUPS = os.getenv('ADD_GROUPS', 'true').lower() == 'true'
+#
+#     if ADD_GROUPS:
+#         print("Dodawanie grup jest włączone. Dodajemy grupy...")
+#         add_groups()
+#     else:
+#         print("Dodawanie grup jest wyłączone. Pomijamy ten krok.")
+#
+#     # Wyświetlenie wszystkich grup
+#     print("Wszystkie grupy w bazie:")
+#     repo = GroupRepo()
+#     groups = repo.find()
+#     for group in groups:
+#         print(group)
 # Główna funkcja
 if __name__ == '__main__':
     if test_connection():
