@@ -3,7 +3,7 @@ from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import Column, Integer, String, Table, ForeignKey
 from sqlalchemy.exc import OperationalError, NoResultFound
 from sqlalchemy.orm import relationship
-from Group import Group, GroupRepo
+from group import Group, GroupRepo
 from globals import app, db, user_group_association
 
 
