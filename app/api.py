@@ -1,7 +1,15 @@
 import os
 from flask import Flask, render_template, request, redirect, url_for, flash, session
 
+
 class AppControler:
+    _instance = None
+
+    def __new__(cls, *args, **kwargs):
+        if cls._instance is None:
+            cls._instance = super(AppControler, cls).__new__(cls, *args, **kwargs)
+        return cls._instance
+
     def __init__(self):
         self.app = Flask(__name__)
         self.modules = []
@@ -15,8 +23,11 @@ class AppControler:
 
 
 class LoginApi:
-    def __init__(self):
-        self.name = "LoginApi"
+    _instance = None
+    def __new__(cls, *args, **kwargs):
+        if cls._instance is None:
+            cls._instance = super(LoginApi, cls).__new__(cls, *args, **kwargs)
+        return cls._instance
 
     def register_routes(self, app):
         app.secret_key = os.urandom(24)
@@ -40,8 +51,11 @@ class LoginApi:
 
 
 class LogoutApi:
-    def __init__(self):
-        self.name = "LogoutApi"
+    _instance = None
+    def __new__(cls, *args, **kwargs):
+        if cls._instance is None:
+            cls._instance = super(LogoutApi, cls).__new__(cls, *args, **kwargs)
+        return cls._instance
 
     def register_routes(self, app):
         app.add_url_rule('/logout', 'logout', self.logout, methods=['GET'])
@@ -52,11 +66,35 @@ class LogoutApi:
         return redirect(url_for('login'))
 
 
+class ChangePasswordApi:
+    _instance = None
+
+    def __new__(cls, *args, **kwargs):
+        if cls._instance is None:
+            cls._instance = super(ChangePasswordApi, cls).__new__(cls, *args, **kwargs)
+        return cls._instance
+
+    def register_routes(self, app):
+        app.add_url_rule('/change_password', 'change_password', self.change_password, methods=['POST', 'GET'])
+
+    def change_password(self):
+        if request.method == 'POST':
+            current_password = request.form.get('current_password')
+            new_password = request.form.get('new_password')
+            confirm_password = request.form.get('confirm_password')
+
+            print(f'{current_password} | {new_password} | {confirm_password}')
+
+        return redirect(url_for('account_info'))
 
 
 class AdminApi:
-    def __init__(self):
-        self.name = "AdminApi"
+    _instance = None
+
+    def __new__(cls, *args, **kwargs):
+        if cls._instance is None:
+            cls._instance = super(AdminApi, cls).__new__(cls, *args, **kwargs)
+        return cls._instance
 
     def register_routes(self, app):
         app.add_url_rule('/dashboard', 'admin_dashboard', self.admin_dashboard, methods=['GET'])

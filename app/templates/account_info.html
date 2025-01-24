@@ -95,6 +95,10 @@
             padding: 10px;
             border-radius: 5px;
         }
+        .password-form {
+            display: none;
+            margin-top: 20px;
+        }
     </style>
 </head>
 <body>
@@ -127,10 +131,34 @@
                 <div class="info-row"><strong>Nazwisko:</strong> <span>{{ last_name }}</span></div>
                 <div class="info-row"><strong>Dodano dnia:</strong> <span>{{ added_date }}</span></div>
                 <div class="info-row"><strong>Email:</strong> <span>{{ email }}</span></div>
-                <button>Zmień hasło</button>
+                <button id="changePasswordBtn">Zmień hasło</button>
+
+                <!-- Formularz zmiany hasła -->
+                <form class="password-form" action="{{ url_for('change_password') }}" method="POST" id="passwordForm">
+                    <div class="mb-3">
+                        <label for="current_password" class="form-label">Aktualne hasło</label>
+                        <input type="password" class="form-control" id="current_password" name="current_password" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="new_password" class="form-label">Nowe hasło</label>
+                        <input type="password" class="form-control" id="new_password" name="new_password" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="confirm_password" class="form-label">Potwierdź nowe hasło</label>
+                        <input type="password" class="form-control" id="confirm_password" name="confirm_password" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Zmień hasło</button>
+                </form>
             </div>
         </div>
     </div>
+
+    <script>
+        // Obsługa kliknięcia przycisku "Zmień hasło"
+        document.getElementById('changePasswordBtn').addEventListener('click', function () {
+            const passwordForm = document.querySelector('.password-form');
+            passwordForm.style.display = passwordForm.style.display === 'none' || passwordForm.style.display === '' ? 'block' : 'none';
+        });
+    </script>
 </body>
 </html>
-
