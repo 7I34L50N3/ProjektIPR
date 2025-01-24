@@ -21,7 +21,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-        }
+
         .navbar a {
             color: #000;
             text-decoration: none;
@@ -67,7 +67,7 @@
         <div>
             <a href="{{ url_for('admin_dashboard') }}">Home</a>
             <a href="{{ url_for('users') }}" class="active">Konta</a>
-            <a href="#">Grupy</a>
+            <a href="{{ url_for('groups') }}" class="active">Grupy</a>
         </div>
         <a href="{{ url_for('logout') }}" class="btn btn-danger">Wyloguj</a>
     </div>
@@ -75,136 +75,142 @@
     <!-- Main Content -->
     <div class="main-container">
         <div class="table-container">
-            <h5>Stworzone Konta</h5>
-            <table class="table table-bordered" id="users-table">
+            <h5>Stworzone Grupy</h5>
+            <table class="table table-bordered" id="groups-table">
                 <thead>
                     <tr>
-                        <th>Imię</th>
-                        <th>Nazwisko</th>
-                        <th>Rola</th>
-                        <th>Konto</th>
-                        <th>Hasło</th>
+                        <th>Id_grupy</th>
+                        <th>Język</th>
+                        <th>Nauczyciel</th>
+                        <th>Termin zajęć</th>
+                        <th>Przypisani Uczniowie</th>
                         <th>Akcje</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {% for user in users %}
-                    <tr data-id="{{ user.id }}">
-                        <td><span>{{ user.first_name }}</span><input type="text" class="form-control d-none" value="{{ user.first_name }}"></td>
-                        <td><span>{{ user.last_name }}</span><input type="text" class="form-control d-none" value="{{ user.last_name }}"></td>
-                        <td><span>{{ user.role }}</span><input type="text" class="form-control d-none" value="{{ user.role }}"></td>
-                        <td><span>{{ user.account }}</span><input type="text" class="form-control d-none" value="{{ user.account }}"></td>
-                        <td><span>{{ user.password }}</span><input type="text" class="form-control d-none" value="{{ user.password }}"></td>
+                    {% for group in groups %}
+                    <tr data-id="{{ group.id }}">
+                        <td><span>{{ group.group_id }}</span><input type="text" class="form-control d-none" value="{{ group.group_id }}"></td>
+                        <td><span>{{ group.language }}</span><input type="text" class="form-control d-none" value="{{ group.language }}"></td>
+                        <td><span>{{ group.teacher }}</span><input type="text" class="form-control d-none" value="{{ group.teacher }}"></td>
+                        <td><span>{{ group.schedule }}</span><input type="text" class="form-control d-none" value="{{ group.schedule }}"></td>
                         <td>
-                            <button class="btn btn-warning btn-sm edit-user">Edytuj</button>
+                            <span>{{ group.students | join(', ') }}</span>
+                            <select multiple class="form-control d-none">
+                                {% for student in all_students %}
+                                <option value="{{ student.id }}" {% if student.id in group.student_ids %}selected{% endif %}>
+                                    {{ student.first_name }} {{ student.last_name }}
+                                </option>
+                                {% endfor %}
+                            </select>
+                        </td>
+                        <td>
+                            <button class="btn btn-warning btn-sm edit-group">Edytuj</button>
                         </td>
                     </tr>
                     {% endfor %}
                 </tbody>
             </table>
             <div>
-                <button class="btn btn-primary" id="add-user">Utwórz nowe konto</button>
+                <button class="btn btn-primary" id="add-group">Utwórz nową grupę</button>
             </div>
         </div>
     </div>
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            // Dodawanie nowego użytkownika
-            document.getElementById('add-user').addEventListener('click', function () {
-                const table = document.getElementById('users-table').getElementsByTagName('tbody')[0];
-                const newRow = table.insertRow();
-
-                // Dodaj pola tekstowe w nowym wierszu
-                newRow.innerHTML = `
-                    <td><input type="text" class="form-control" placeholder="Imię"></td>
-                    <td><input type="text" class="form-control" placeholder="Nazwisko"></td>
-                    <td><input type="text" class="form-control" placeholder="Rola"></td>
-                    <td><input type="text" class="form-control" placeholder="Konto"></td>
-                    <td><input type="password" class="form-control" placeholder="Hasło"></td>
-                    <td><button class="btn btn-success btn-sm save-user">Zapisz</button></td>
-                `;
-
-                // Obsługa przycisku "Zapisz" dla nowego użytkownika
-                newRow.querySelector('.save-user').addEventListener('click', function () {
-                    const inputs = newRow.querySelectorAll('input');
-                    const userData = {
-                        first_name: inputs[0].value.trim(),
-                        last_name: inputs[1].value.trim(),
-                        role: inputs[2].value.trim(),
-                        account: inputs[3].value.trim(),
-                        password: inputs[4].value.trim()
-                    };
-
-                    console.log('Dodawanie użytkownika:', userData); // Debugowanie danych
-
-                    // Wyślij dane do backendu
-                    fetch('/add_user', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify(userData)
-                    }).then(response => {
-                        if (response.ok) {
-                            alert('Użytkownik został dodany!');
-                            location.reload(); // Odśwież stronę
-                        } else {
-                            alert('Wystąpił błąd podczas dodawania użytkownika.');
-                        }
-                    });
-                });
-            });
-
-            // Obsługa edycji istniejących użytkowników
-            document.querySelectorAll('.edit-user').forEach(button => {
+            // Edycja istniejących grup
+            document.querySelectorAll('.edit-group').forEach(button => {
                 button.addEventListener('click', function () {
                     const row = this.closest('tr');
                     const spans = row.querySelectorAll('span');
-                    const inputs = row.querySelectorAll('input');
+                    const inputs = row.querySelectorAll('input, select');
 
-                    // Pokazujemy pola input i ukrywamy spany
                     spans.forEach(span => span.classList.add('d-none'));
                     inputs.forEach(input => input.classList.remove('d-none'));
 
-                    // Zmień przycisk "Edytuj" na "Zapisz"
                     this.textContent = 'Zapisz';
                     this.classList.remove('btn-warning');
                     this.classList.add('btn-success');
-                    this.classList.remove('edit-user');
-                    this.classList.add('save-edit-user');
+                    this.classList.remove('edit-group');
+                    this.classList.add('save-edit-group');
 
-                    // Obsługa kliknięcia przycisku "Zapisz"
-                    this.addEventListener('click', function saveUserEdit() {
-                        const userData = {
+                    this.addEventListener('click', function saveGroupEdit() {
+                        const studentSelect = row.querySelector('select');
+                        const selectedStudents = Array.from(studentSelect.selectedOptions).map(option => option.value);
+
+                        const groupData = {
                             id: row.dataset.id,
-                            first_name: inputs[0].value.trim(),
-                            last_name: inputs[1].value.trim(),
-                            role: inputs[2].value.trim(),
-                            account: inputs[3].value.trim(),
-                            password: inputs[4].value.trim()
+                            group_id: row.querySelector('input').value.trim(),
+                            language: row.querySelectorAll('input')[1].value.trim(),
+                            teacher: row.querySelectorAll('input')[2].value.trim(),
+                            schedule: row.querySelectorAll('input')[3].value.trim(),
+                            students: selectedStudents
                         };
 
-                        console.log("Dane użytkownika do wysłania:", userData);
-
-                        // Wyślij dane do backendu
-                        fetch('/edit_user', {
+                        fetch('/edit_group', {
                             method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json'
-                            },
-                            body: JSON.stringify(userData)
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify(groupData)
                         }).then(response => {
                             if (response.ok) {
-                                alert('Zmiany zostały zapisane!');
-                                location.reload(); // Odśwież stronę
+                                alert('Zmiany zapisane!');
+                                location.reload();
                             } else {
-                                alert('Wystąpił błąd podczas zapisywania zmian.');
+                                alert('Błąd przy zapisie.');
                             }
                         });
 
-                        this.removeEventListener('click', saveUserEdit); // Usuń zdarzenie, aby uniknąć wielokrotnego przypisywania
-                    }, { once: true }); // Dodaj { once: true } dla jednorazowego wykonania
+                        this.removeEventListener('click', saveGroupEdit);
+                    }, { once: true });
+                });
+            });
+
+            // Dodawanie nowej grupy
+            document.getElementById('add-group').addEventListener('click', function () {
+                const table = document.getElementById('groups-table').getElementsByTagName('tbody')[0];
+                const newRow = table.insertRow();
+
+                newRow.innerHTML = `
+                    <td><input type="text" class="form-control" placeholder="Id grupy"></td>
+                    <td><input type="text" class="form-control" placeholder="Język"></td>
+                    <td><input type="text" class="form-control" placeholder="Nauczyciel"></td>
+                    <td><input type="text" class="form-control" placeholder="Termin zajęć"></td>
+                    <td>
+                        <select multiple class="form-control">
+                            {% for student in all_students %}
+                            <option value="{{ student.id }}">{{ student.first_name }} {{ student.last_name }}</option>
+                            {% endfor %}
+                        </select>
+                    </td>
+                    <td><button class="btn btn-success btn-sm save-group">Zapisz</button></td>
+                `;
+
+                newRow.querySelector('.save-group').addEventListener('click', function () {
+                    const inputs = newRow.querySelectorAll('input');
+                    const studentSelect = newRow.querySelector('select');
+                    const selectedStudents = Array.from(studentSelect.selectedOptions).map(option => option.value);
+
+                    const groupData = {
+                        group_id: inputs[0].value.trim(),
+                        language: inputs[1].value.trim(),
+                        teacher: inputs[2].value.trim(),
+                        schedule: inputs[3].value.trim(),
+                        students: selectedStudents
+                    };
+
+                    fetch('/add_group', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(groupData)
+                    }).then(response => {
+                        if (response.ok) {
+                            alert('Grupa dodana!');
+                            location.reload();
+                        } else {
+                            alert('Błąd przy dodawaniu.');
+                        }
+                    });
                 });
             });
         });
