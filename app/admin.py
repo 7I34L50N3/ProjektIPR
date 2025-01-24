@@ -2,7 +2,11 @@ from user import User,UserRepo
 from group import GroupRepo
 from globals import db,app
 class Admin(User):
-    def __init__(self,session):
+    __mapper_args__ = {
+        'polymorphic_identity': 'admin',  # Wartość dla klasy Admin
+    }
+    def __init__(self,session,**kwargs):
+        super().__init__(**kwargs)  # Wywołanie konstruktora User
         self.user_repo = UserRepo(session)
         self.group_repo = GroupRepo(session)
 
