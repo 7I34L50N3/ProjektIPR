@@ -5,6 +5,11 @@ from student import Student
 from admin import Admin
 from globals import app
 
+import logging
+
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+
 
 class AppControler:
     _instance = None
@@ -163,11 +168,11 @@ class UserApi:
 
     def add_user(self):
         user_data = request.get_json()
-        print(user_data)
+        logger.info(user_data)
         return jsonify({"message": "Użytkownik został dodany pomyślnie!"}), 200
 
     def edit_user(self):
         user_data = request.get_json()
-        print(user_data)
+        logger.info(user_data)
         return jsonify({"message": "Zmiany zapisane pomyślnie!"}), 200
 
