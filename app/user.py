@@ -110,7 +110,8 @@ if __name__ == "__main__":
 
 
         # Przypisywanie użytkowników do grup
-        user_repo.create("admin", "admin", "admin@gmail.com", "Admin", "Admin", "admin")
+        user1 = user_repo.find_by_argument(username="Janekthebuilder")
+        user1.change_password(db.session, "123")
 
         # group1 = GroupRepo().find_by_argument(name="Beginner English")
         # print(user1, group1)
