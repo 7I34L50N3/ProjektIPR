@@ -106,7 +106,7 @@
     <div class="navbar">
         <div>
             <a href="{{ url_for('admin_dashboard') }}">Home</a>
-            <a href="#">Konta</a>
+            <a href="{{ url_for('users') }}" class="active">Konta</a>
             <a href="#">Grupy</a>
         </div>
         <a href="{{ url_for('logout') }}" class="btn btn-danger">Wyloguj</a>
