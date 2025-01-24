@@ -74,5 +74,7 @@ if __name__ == "__main__":
         if isinstance(currentUser, Admin):
             print("Zalogowano jako administrator.")
         print(currentUser.check_info())
+
         currentUser.check_groups()
+        currentUser.add_group(name="chinski",description="advnace")
         db.session.commit()
