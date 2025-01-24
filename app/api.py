@@ -162,13 +162,14 @@ class AdminApi:
 
         user_repo = UserRepo()
         user = user_repo.find_by_argument(username=session.get('user_id'))
-        user_data = {
-            'role': 'Administrator',
-            'first_name': 'Ryszard',
-            'last_name': 'Wójcik',
-            'email': f'ryszard.wojcik@lingduo.edu.pl',
-            'added_date': '16.12.2024',
-        }
+        user_data = user.check_info()
+        # user_data = {
+        #     'role': 'Administrator',
+        #     'first_name': 'Ryszard',
+        #     'last_name': 'Wójcik',
+        #     'email': f'ryszard.wojcik@lingduo.edu.pl',
+        #     'added_date': '16.12.2024',
+        # }
         return render_template("account_info.html", **user_data)
 
 

@@ -1,11 +1,12 @@
 from flask import Flask, request, redirect, url_for, flash, render_template, session
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy import Column, Integer, String, Table, ForeignKey
+from sqlalchemy import Column, Integer, String, Table, ForeignKey, DateTime
 from sqlalchemy.exc import OperationalError, NoResultFound
 from sqlalchemy.orm import relationship
 from group import Group, GroupRepo
 from globals import app, db, user_group_association
 from hashlib import sha256
+from datetime import datetime
 
 
 class User(db.Model):
@@ -37,12 +38,11 @@ class User(db.Model):
 
     def check_info(self):
         return {
-            "username": self.username,
             "email": self.email,
-            "name": self.name,
-            "surname": self.surname,
-            "groups": [group.name for group in self.groups],  # Wyświetla nazwy grup
-            "role": self.role
+            "first_name": self.name,
+            "last_name": self.surname,
+            "role": self.role,
+            "added_date": str(self.created_at)
         }
     def get_role(self):
         return self.role
