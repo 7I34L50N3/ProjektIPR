@@ -21,7 +21,6 @@ class LoginApi:
     def register_routes(self, app):
         app.secret_key = os.urandom(24)
         app.add_url_rule('/', 'login', self.login, methods=['GET', 'POST'])
-        app.add_url_rule('/logout', 'logout', self.logout, methods=['GET'])
 
     def login(self):
         if request.method == "POST":
@@ -38,6 +37,14 @@ class LoginApi:
                 flash("Nieprawidłowy login lub hasło", "error")
 
         return render_template("login.html")
+
+
+class LogoutApi:
+    def __init__(self):
+        self.name = "LogoutApi"
+
+    def register_routes(self, app):
+        app.add_url_rule('/logout', 'logout', self.logout, methods=['GET'])
 
     def logout(self):
         session.pop('user_id', None)  # Usuń użytkownika z sesji
