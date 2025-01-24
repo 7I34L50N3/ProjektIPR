@@ -3,7 +3,7 @@ from group import GroupRepo
 from globals import db,app
 from mark import Mark
 
-class student(User):
+class Student(User):
     __mapper_args__ = {
         'polymorphic_identity': 'student',
     }

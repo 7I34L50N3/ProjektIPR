@@ -1,5 +1,9 @@
 import os
 from flask import Flask, render_template, request, redirect, url_for, flash, session, jsonify
+from user import UserRepo, User
+from student import Student
+from admin import Admin
+from globals import app
 
 
 class AppControler:
@@ -11,7 +15,7 @@ class AppControler:
         return cls._instance
 
     def __init__(self):
-        self.app = Flask(__name__)
+        self.app = app
         self.modules = []
 
     def add_module(self, module):
@@ -37,12 +41,17 @@ class LoginApi:
         if request.method == "POST":
             username = request.form.get("username")
             password = request.form.get("password")
+            user_repo = UserRepo()
+            user = user_repo.login(username, password)
 
-            print(f'Username: {username} | Password: {password}')
-
-            # Weryfikacja użytkownika (przykład hardkodowany, zastąp bazą danych)
-            if username == "Admin" and password == "Admin":
-                session['user_id'] = username  # Przechowuj nazwę użytkownika w sesji
+            if user is None:
+                flash("Nieprawidłowy login lub hasło", "error")
+                return render_template("login.html")
+            if(user.get_role() == "student"):
+                session['user_id'] = username
+                pass
+            elif(user.get_role() == "admin"):
+                session['user_id'] = username
                 return redirect(url_for('admin_dashboard'))
             else:
                 flash("Nieprawidłowy login lub hasło", "error")
