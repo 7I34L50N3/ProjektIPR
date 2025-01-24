@@ -41,16 +41,14 @@ class LoginApi:
         if request.method == "POST":
             username = request.form.get("username")
             password = request.form.get("password")
-            if username == "admin" and password == "admin":
-                session['user_id'] = username
-                return redirect(url_for('admin_dashboard'))
-
             user_repo = UserRepo()
             user = user_repo.login(username, password)
+
             if user is None:
                 flash("Nieprawidłowy login lub hasło", "error")
                 return render_template("login.html")
             if(user.get_role() == "student"):
+                session['user_id'] = username
                 pass
             elif(user.get_role() == "admin"):
                 session['user_id'] = username
