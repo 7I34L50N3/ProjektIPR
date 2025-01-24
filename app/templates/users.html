@@ -17,7 +17,7 @@
         .navbar {
             background-color: #ffffff;
             border-bottom: 1px solid #ddd;
-            padding: 0 20px;
+            padding: 10px 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -76,7 +76,7 @@
     <div class="main-container">
         <div class="table-container">
             <h5>Stworzone Konta</h5>
-            <table class="table table-bordered">
+            <table class="table table-bordered" id="users-table">
                 <thead>
                     <tr>
                         <th>Imię</th>
@@ -103,9 +103,54 @@
                 </tbody>
             </table>
             <div>
-                <button class="btn btn-primary">Utwórz nowe konto</button>
+                <button class="btn btn-primary" id="add-user">Utwórz nowe konto</button>
             </div>
         </div>
     </div>
+
+    <script>
+        document.getElementById('add-user').addEventListener('click', function() {
+            const table = document.getElementById('users-table').getElementsByTagName('tbody')[0];
+            const newRow = table.insertRow();
+
+            // Dodaj pola tekstowe w nowym wierszu
+            newRow.innerHTML = `
+                <td><input type="text" class="form-control" placeholder="Imię"></td>
+                <td><input type="text" class="form-control" placeholder="Nazwisko"></td>
+                <td><input type="text" class="form-control" placeholder="Rola"></td>
+                <td><input type="text" class="form-control" placeholder="Konto"></td>
+                <td><input type="password" class="form-control" placeholder="Hasło"></td>
+                <td><button class="btn btn-success btn-sm save-user">Zapisz</button></td>
+            `;
+
+            // Obsługa przycisku "Zapisz"
+            newRow.querySelector('.save-user').addEventListener('click', function() {
+                const inputs = newRow.getElementsByTagName('input');
+                const userData = {
+                    first_name: inputs[0].value,
+                    last_name: inputs[1].value,
+                    role: inputs[2].value,
+                    account: inputs[3].value,
+                    password: inputs[4].value
+                };
+
+                // Wyślij dane do backendu
+                fetch('/add_user', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(userData)
+                }).then(response => {
+                    if (response.ok) {
+                        alert('Użytkownik został zapisany!');
+                        location.reload(); // Odśwież stronę
+                    } else {
+                        alert('Wystąpił błąd podczas zapisywania użytkownika.');
+                    }
+                });
+            });
+        });
+    </script>
 </body>
 </html>

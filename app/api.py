@@ -1,5 +1,5 @@
 import os
-from flask import Flask, render_template, request, redirect, url_for, flash, session
+from flask import Flask, render_template, request, redirect, url_for, flash, session, jsonify
 
 
 class AppControler:
@@ -140,6 +140,7 @@ class UserApi:
 
     def register_routes(self, app):
         app.add_url_rule('/users', 'users', self.users, methods=['GET'])
+        app.add_url_rule('/add_user', 'add_user', self.add_user, methods=['POST'])
 
     def users(self):
         users_data = {
@@ -151,3 +152,9 @@ class UserApi:
             ]
         }
         return render_template("users.html", **users_data)
+
+    def add_user(self):
+        user_data = request.get_json()
+        print(user_data)
+
+        return jsonify({"message": "Użytkownik zapisany pomyślnie!"}), 200
