@@ -6,17 +6,6 @@ ENV FLASK_ENV=development
 
 WORKDIR /app
 
-# Instalacja brakujących pakietów
-RUN apt-get update && apt-get install -y \
-    apt-utils \
-    gcc \
-    default-libmysqlclient-dev \
-    pkg-config \
-    build-essential \
-    tzdata \
-    curl \
-    && rm -rf /var/lib/apt/lists/*
-
 COPY requirements.txt .
 
 RUN pip install --no-cache-dir -r requirements.txt

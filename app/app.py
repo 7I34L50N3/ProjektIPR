@@ -1,4 +1,4 @@
-from api import AppControler, LoginApi, LogoutApi, ChangePasswordApi, AdminApi, UserApi
+from api import AppControler, LoginApi, LogoutApi, ChangePasswordApi, AdminApi, UserApi, GroupApi
 
 app_controller = AppControler()
 
@@ -7,6 +7,7 @@ app_controller.add_module(LogoutApi())
 app_controller.add_module(ChangePasswordApi())
 app_controller.add_module(AdminApi())
 app_controller.add_module(UserApi())
+app_controller.add_module(GroupApi())
 
 app = app_controller.app
 
