@@ -99,6 +99,18 @@ class ChangePasswordApi:
             new_password = request.form.get('new_password')
             confirm_password = request.form.get('confirm_password')
 
+            if new_password != confirm_password:
+                flash("Nowe hasła nie są takie same", "error")
+                return redirect(url_for('change_password'))
+
+            user_repo = UserRepo()
+            user = user_repo.find_by_argument(username=session.get('user_id'))
+            if user is None:
+                flash("Użytkownik nie istnieje", "error")
+                return redirect(url_for('change_password'))
+
+            user.change_password(current_password, new_password)
+
             print(f'{current_password} | {new_password} | {confirm_password}')
 
         return redirect(url_for('account_info'))
