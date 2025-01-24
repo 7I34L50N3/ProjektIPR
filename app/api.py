@@ -140,6 +140,12 @@ class AdminApi:
             flash("Musisz być zalogowany, aby uzyskać dostęp do tej strony.", "error")
             return redirect(url_for('login'))
 
+        user_repo = UserRepo()
+        user = user_repo.find_by_argument(username=session.get('user_id'))
+        if user.get_role() != "admin":
+            flash("Nie masz uprawnień do tej strony", "error")
+            return redirect(url_for('login'))
+
         dashboard_data = {
             'username': user_id,
             'students': 50,
@@ -154,6 +160,8 @@ class AdminApi:
             flash("Musisz być zalogowany, aby uzyskać dostęp do tej strony.", "error")
             return redirect(url_for('login'))
 
+        user_repo = UserRepo()
+        user = user_repo.find_by_argument(username=session.get('user_id'))
         user_data = {
             'role': 'Administrator',
             'first_name': 'Ryszard',

@@ -18,6 +18,7 @@ class User(db.Model):
     name = Column(String(50), nullable=False)  # Dodano długość VARCHAR
     surname = Column(String(50), nullable=False)  # Dodano długość VARCHAR
     role = Column(String(50), nullable=False)  # Dodano długość VARCHAR
+    create_time = Column(DateTime, nullable=False, default=datetime.utcnow)
     groups = relationship('Group', secondary=user_group_association, back_populates='users', lazy='dynamic')
 
     __mapper_args__ = {
