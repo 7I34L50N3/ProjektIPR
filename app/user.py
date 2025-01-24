@@ -106,12 +106,11 @@ if __name__ == "__main__":
         # Tworzenie tabel
         # UserRepo.create_tables()
         #
-        user_repo = UserRepo(db.session)  # Singleton
+        user_repo = UserRepo()  # Singleton
 
 
         # Przypisywanie użytkowników do grup
-        user1 = user_repo.find_by_argument(username="ke.smith")
-        user1.change_password(db.session,"123")
+        user_repo.create("admin", "admin", "admin@gmail.com", "Admin", "Admin", "admin")
 
         # group1 = GroupRepo().find_by_argument(name="Beginner English")
         # print(user1, group1)
