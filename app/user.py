@@ -5,7 +5,7 @@ from sqlalchemy.exc import OperationalError, NoResultFound
 from sqlalchemy.orm import relationship
 from group import Group, GroupRepo
 from globals import app, db, user_group_association
-from hashlib import sha512
+from hashlib import sha256
 
 
 
@@ -25,7 +25,7 @@ class User(db.Model):
         print(f"User {self.username} logged out.")
 
     def change_password(self, session, new_password):
-        new_password = sha512(new_password.encode()).hexdigest()
+        new_password = sha256(new_password.encode()).hexdigest()
         self.password = new_password
         session.commit()
         print(f"Password changed for user {self.username}.")
@@ -53,7 +53,7 @@ class UserRepo:
         return self.session.query(User).all()
 
     def create(self, username, password, email, name, surname, role):
-        password = sha512(password.encode()).hexdigest()
+        password = sha256(password.encode()).hexdigest()
         user = User(username=username, password=password, email=email, name=name, surname=surname, role=role)
         self.session.add(user)
         self.session.commit()
@@ -71,7 +71,7 @@ class UserRepo:
             return None
         for key, value in kwargs.items():
             if key == 'password':
-                value = sha512(value.encode()).hexdigest()
+                value = sha256(value.encode()).hexdigest()
             setattr(user, key, value)
         self.session.commit()
         return user
@@ -85,7 +85,7 @@ class UserRepo:
     def login(self, username, password):
         user = self.session.query(User).filter_by(username=username).first()
 
-        password = sha512(password.encode()).hexdigest()
+        password = sha256(password.encode()).hexdigest()
         if user and user.password == password:
             return user
         else:
