@@ -4,7 +4,7 @@ from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.exc import OperationalError
 from sqlalchemy.sql import text
 from sqlalchemy.orm import relationship
-from Global import app, db, user_group_association
+from globals import app, db, user_group_association
 
 
 

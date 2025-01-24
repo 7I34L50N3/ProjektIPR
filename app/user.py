@@ -4,7 +4,7 @@ from sqlalchemy import Column, Integer, String, Table, ForeignKey
 from sqlalchemy.exc import OperationalError, NoResultFound
 from sqlalchemy.orm import relationship
 from Group import Group, GroupRepo
-from Global import app, db, user_group_association
+from globals import app, db, user_group_association
 
 
 
