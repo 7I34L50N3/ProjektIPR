@@ -1,11 +1,10 @@
-from user import UserRepo
+from user import User,UserRepo
 from group import GroupRepo
 from globals import db,app
-
-class Admin:
+class Admin(User):
     def __init__(self,session):
         self.user_repo = UserRepo(session)
-        self.group_repo = UserRepo(session)
+        self.group_repo = GroupRepo(session)
 
     # Dodawanie nowego użytkownika
     def add_user(self, username, password, email, name, surname, role="user"):
