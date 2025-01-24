@@ -47,47 +47,46 @@ class User(db.Model):
 class UserRepo:
     _instance = None
 
-    def __new__(cls, session):
+    def __new__(cls):
         if cls._instance is None:
             cls._instance = super(UserRepo, cls).__new__(cls)
-            cls._instance.session = session
         return cls._instance
 
     def find(self):
-        return self.session.query(User).all()
+        return db.session.query(User).all()
 
     def create(self, username, password, email, name, surname, role):
         password = sha256(password.encode()).hexdigest()
         user = User(username=username, password=password, email=email, name=name, surname=surname, role=role)
-        self.session.add(user)
-        self.session.commit()
+        db.session.add(user)
+        db.session.commit()
         return user
 
     def find_by_argument(self, **kwargs):
         try:
-            return self.session.query(User).filter_by(**kwargs).one()
+            return db.session.query(User).filter_by(**kwargs).one()
         except NoResultFound:
             return None
 
     def update(self, user_id, **kwargs):
-        user = self.session.query(User).get(user_id)
+        user = db.session.query(User).get(user_id)
         if not user:
             return None
         for key, value in kwargs.items():
             if key == 'password':
                 value = sha256(value.encode()).hexdigest()
             setattr(user, key, value)
-        self.session.commit()
+        db.session.commit()
         return user
 
     def delete(self, user_id):
-        user = self.session.query(User).get(user_id)
+        user = db.session.query(User).get(user_id)
         if user:
-            self.session.delete(user)
-            self.session.commit()
+            db.session.delete(user)
+            db.session.commit()
 
     def login(self, username, password):
-        user = self.session.query(User).filter_by(username=username).first()
+        user = db.session.query(User).filter_by(username=username).first()
 
         password = sha256(password.encode()).hexdigest()
         if user and user.password == password:

@@ -5,7 +5,7 @@ class Admin(User):
     __mapper_args__ = {
         'polymorphic_identity': 'admin',  # Wartość dla klasy Admin
     }
-    user_repo = UserRepo(db.session)
+    user_repo = UserRepo()
     group_repo = GroupRepo()
     def __init__(self,**kwargs):
         super().__init__(**kwargs)  # Wywołanie konstruktora User
@@ -69,7 +69,7 @@ class Admin(User):
 if __name__ == "__main__":
     with app.app_context():
         # Przypisywanie użytkowników do grup
-        user_repo = UserRepo(db.session)
+        user_repo = UserRepo()
         currentUser = user_repo.login("ke.smith", "123")
         if isinstance(currentUser, Admin):
             print("Zalogowano jako administrator.")
