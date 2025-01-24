@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Informacje o koncie</title>
+    <title>LingDuo</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body {
@@ -13,21 +13,75 @@
             height: 100vh;
             display: flex;
             flex-direction: column;
+        }
+        .navbar {
+            background-color: #ffffff;
+            border-bottom: 1px solid #ddd;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .navbar a {
+            color: #000;
+            text-decoration: none;
+            margin-right: 15px;
+        }
+        .navbar .btn-danger {
+            text-decoration: none;
+            padding: 5px 15px;
+            border-radius: 5px;
+            color: #fff;
+            background-color: #dc3545;
+            border: none;
+        }
+        .navbar .btn-danger:hover {
+            background-color: #c82333;
+            text-decoration: none;
+        }
+        .main-container {
+            flex: 1;
+            display: flex;
+            overflow: hidden;
+        }
+        .sidebar {
+            width: 250px;
+            background-color: #ffffff;
+            border-right: 1px solid #ddd;
+            padding: 20px;
+        }
+        .sidebar .profile img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background-color: #e9ecef;
+            padding: 10px;
+            margin: 0 auto;
+            display: block;
+        }
+        .sidebar .profile h3 {
+            text-align: center;
+            margin-top: 10px;
+        }
+        .content {
+            flex: 1;
+            padding: 20px;
+            display: flex;
             justify-content: center;
             align-items: center;
         }
         .card {
-            width: 400px;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            padding: 20px;
             background-color: #ffffff;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            border: 1px solid #ddd;
+            padding: 20px;
+            border-radius: 8px;
+            width: 400px;
         }
         .card h5 {
+            text-align: center;
             margin-bottom: 15px;
         }
-        .card .info-row {
+        .info-row {
             display: flex;
             justify-content: space-between;
             margin-bottom: 10px;
@@ -44,14 +98,39 @@
     </style>
 </head>
 <body>
-    <div class="card">
-        <h5>Admin {{ first_name }}!</h5>
-        <div class="info-row"><strong>Rola:</strong> <span>{{ role }}</span></div>
-        <div class="info-row"><strong>Imię:</strong> <span>{{ first_name }}</span></div>
-        <div class="info-row"><strong>Nazwisko:</strong> <span>{{ last_name }}</span></div>
-        <div class="info-row"><strong>Dodano dnia:</strong> <span>{{ added_date }}</span></div>
-        <div class="info-row"><strong>Email:</strong> <span>{{ email }}</span></div>
-        <button onclick="window.location.href='{{ url_for('logout') }}'">Wyloguj</button>
+    <!-- Navbar -->
+    <div class="navbar">
+        <div>
+            <a href="{{ url_for('admin_dashboard') }}">Home</a>
+            <a href="#">Konta</a>
+            <a href="#">Grupy</a>
+        </div>
+        <a href="{{ url_for('logout') }}" class="btn btn-danger">Wyloguj</a>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="profile">
+                <img src="https://via.placeholder.com/100" alt="Profile">
+                <h3>{{ username }}</h3>
+            </div>
+        </div>
+
+        <!-- Content -->
+        <div class="content">
+            <div class="card">
+                <h5>Informacje o koncie:</h5>
+                <div class="info-row"><strong>Rola:</strong> <span>{{ role }}</span></div>
+                <div class="info-row"><strong>Imię:</strong> <span>{{ first_name }}</span></div>
+                <div class="info-row"><strong>Nazwisko:</strong> <span>{{ last_name }}</span></div>
+                <div class="info-row"><strong>Dodano dnia:</strong> <span>{{ added_date }}</span></div>
+                <div class="info-row"><strong>Email:</strong> <span>{{ email }}</span></div>
+                <button>Zmień hasło</button>
+            </div>
+        </div>
     </div>
 </body>
 </html>
+

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LingDuo Dashboard</title>
+    <title>LingDuo</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body {
@@ -33,6 +33,18 @@
             color: #fff;
             padding: 5px 15px;
             border-radius: 5px;
+        }
+        .navbar .btn-danger {
+            text-decoration: none;
+            padding: 5px 15px;
+            border-radius: 5px;
+            color: #fff;
+            background-color: #dc3545;
+            border: none;
+        }
+        .navbar .btn-danger:hover {
+            background-color: #c82333;
+            text-decoration: none;
         }
         .main-container {
             flex: 1;
@@ -116,11 +128,11 @@
     <!-- Navbar -->
     <div class="navbar">
         <div>
-            <a href="#">Home</a>
+            <a href="{{ url_for('admin_dashboard') }}">Home</a>
             <a href="#">Konta</a>
             <a href="#">Grupy</a>
         </div>
-        <button onclick="window.location.href='{{ url_for('logout') }}'" class="btn btn-danger">Wyloguj</button>
+        <a href="{{ url_for('logout') }}" class="btn btn-danger">Wyloguj</a>
     </div>
 
     <!-- Main Content -->
