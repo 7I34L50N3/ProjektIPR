@@ -19,16 +19,6 @@ class Group(db.Model):
     def __repr__(self):
         return f"<Group {self.name}>"
 
-# Funkcja testująca połączenie z bazą danych
-def test_connection():
-    with app.app_context():
-        try:
-            db.session.execute(text('SELECT 1'))  # Wykonaj prostą operację SQL
-            print("Połączenie z bazą danych działa!")
-            return True
-        except OperationalError as e:
-            print(f"Błąd połączenia z bazą danych: {e}")
-            return False
 
 # Repozytorium grup
 class GroupRepo:
