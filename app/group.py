@@ -22,6 +22,13 @@ class Group(db.Model):
 
 # Repozytorium grup
 class GroupRepo:
+    _instance = None  # Atrybut klasy przechowujący jedyną instancję
+
+    def __new__(cls, *args, **kwargs):
+        if not cls._instance:  # Jeśli instancja jeszcze nie istnieje, twórz ją
+            cls._instance = super().__new__(cls)
+        return cls._instance
+
     def __init__(self):
         pass
 
