@@ -21,7 +21,6 @@ class LoginApi:
     def register_routes(self, app):
         app.secret_key = os.urandom(24)
         app.add_url_rule('/', 'login', self.login, methods=['GET', 'POST'])
-        app.add_url_rule('/dashboard', 'success', self.success, methods=['GET'])
         app.add_url_rule('/logout', 'logout', self.logout, methods=['GET'])
 
     def login(self):
@@ -34,24 +33,11 @@ class LoginApi:
             # Weryfikacja użytkownika (przykład hardkodowany, zastąp bazą danych)
             if username == "Admin" and password == "Admin":
                 session['user_id'] = username  # Przechowuj nazwę użytkownika w sesji
-                return redirect(url_for('success'))
+                return redirect(url_for('admin_dashboard'))
             else:
                 flash("Nieprawidłowy login lub hasło", "error")
 
         return render_template("login.html")
-
-    def success(self):
-        user_id = session.get('user_id')  # Pobierz ID użytkownika z sesji
-        if not user_id:
-            flash("Musisz być zalogowany, aby uzyskać dostęp do tej strony.", "error")
-            return redirect(url_for('login'))
-        data = {
-            'username': user_id,
-            'students': 50,
-            'teachers': 4,
-            'groups': 5
-        }
-        return render_template("admin_dashboard.html", **data)
 
     def logout(self):
         session.pop('user_id', None)  # Usuń użytkownika z sesji
@@ -74,7 +60,14 @@ class AdminApi:
         if not user_id:
             flash("Musisz być zalogowany, aby uzyskać dostęp do tej strony.", "error")
             return redirect(url_for('login'))
-        return render_template("admin_dashboard.html")
+
+        dashboard_data = {
+            'username': user_id,
+            'students': 50,
+            'teachers': 4,
+            'groups': 5
+        }
+        return render_template("admin_dashboard.html", **dashboard_data)
 
     def account_info(self):
         user_id = session.get('user_id')
