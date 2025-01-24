@@ -17,6 +17,7 @@ class User(db.Model):
     email = Column(String(100), nullable=False, unique=True)  # Dodano długość VARCHAR
     name = Column(String(50), nullable=False)  # Dodano długość VARCHAR
     surname = Column(String(50), nullable=False)  # Dodano długość VARCHAR
+    role = Column(String(50), nullable=False)  # Dodano długość VARCHAR
     groups = relationship('Group', secondary=user_group_association, back_populates='users', lazy='dynamic')
 
     def logout(self):
@@ -33,7 +34,8 @@ class User(db.Model):
             "email": self.email,
             "name": self.name,
             "surname": self.surname,
-            "groups": [group.name for group in self.groups]  # Wyświetla nazwy grup
+            "groups": [group.name for group in self.groups],  # Wyświetla nazwy grup
+            "role": self.role
         }
 
 class UserRepo:
@@ -96,10 +98,10 @@ if __name__ == "__main__":
 
 
         # Przypisywanie użytkowników do grup
-        user1 = user_repo.find_by_argument(username="fuck.doe")
-        group1 = GroupRepo().find_by_argument(name="Beginner English")
-        print(user1, group1)
-        user1.groups.append(group1)
+        # user1 = user_repo.find_by_argument(username="fuck.doe")
+        # group1 = GroupRepo().find_by_argument(name="Beginner English")
+        # print(user1, group1)
+        # user1.groups.append(group1)
         db.session.commit()
 
         # Wyświetlenie wszystkich użytkowników i ich grup
