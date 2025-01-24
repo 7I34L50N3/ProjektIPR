@@ -46,7 +46,8 @@ class GroupApi:
                 {"id": 1, "first_name": "Adolf", "last_name": "H."},
                 {"id": 2, "first_name": "Anna", "last_name": "Kowalska"},
                 {"id": 3, "first_name": "Jan", "last_name": "Nowak"}
-            ]
+            ],
+            "all_schedules": ["Pn. 9:00", "Śr. 15:40", "Pt. 18:00"]
         }
         return render_template("groups.html", **groups_data)
 

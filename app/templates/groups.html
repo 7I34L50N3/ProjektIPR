@@ -92,7 +92,18 @@
 <!--                    <tr data-id="{{ group.id }}">-->
 <!--                        <td><span>{{ group.group_id }}</span><input type="text" class="form-control d-none" value="{{ group.group_id }}"></td>-->
 <!--                        <td><span>{{ group.language }}</span><input type="text" class="form-control d-none" value="{{ group.language }}"></td>-->
-<!--                        <td><span>{{ group.teacher }}</span><input type="text" class="form-control d-none" value="{{ group.teacher }}"></td>-->
+<!--                        <td>-->
+<!--                            <span>{{ group.teacher }}</span>-->
+<!--                            <div class="form-control d-none">-->
+<!--                                <select class="form-control teacher-select">-->
+<!--                                    {% for teacher in all_teachers %}-->
+<!--                                    <option value="{{ teacher.id }}" {% if teacher.id == group.teacher_id %}selected{% endif %}>-->
+<!--                                        {{ teacher.first_name }} {{ teacher.last_name }}-->
+<!--                                    </option>-->
+<!--                                    {% endfor %}-->
+<!--                                </select>-->
+<!--                            </div>-->
+<!--                        </td>-->
 <!--                        <td><span>{{ group.schedule }}</span><input type="text" class="form-control d-none" value="{{ group.schedule }}"></td>-->
 <!--                        <td>-->
 <!--                            <span>{{ group.students | join(', ') }}</span>-->
@@ -139,13 +150,15 @@
 
 <!--                    this.addEventListener('click', function saveGroupEdit() {-->
 <!--                        const studentSelect = row.querySelector('.student-select');-->
+<!--                        const teacherSelect = row.querySelector('.teacher-select');-->
 <!--                        const selectedStudents = Array.from(studentSelect.selectedOptions).map(option => option.value);-->
+<!--                        const selectedTeacher = teacherSelect.value;-->
 
 <!--                        const groupData = {-->
 <!--                            id: row.dataset.id,-->
 <!--                            group_id: row.querySelector('input').value.trim(),-->
 <!--                            language: row.querySelectorAll('input')[1].value.trim(),-->
-<!--                            teacher: row.querySelectorAll('input')[2].value.trim(),-->
+<!--                            teacher: selectedTeacher,-->
 <!--                            schedule: row.querySelectorAll('input')[3].value.trim(),-->
 <!--                            students: selectedStudents-->
 <!--                        };-->
@@ -176,7 +189,15 @@
 <!--                newRow.innerHTML = `-->
 <!--                    <td><input type="text" class="form-control" placeholder="Id grupy"></td>-->
 <!--                    <td><input type="text" class="form-control" placeholder="Język"></td>-->
-<!--                    <td><input type="text" class="form-control" placeholder="Nauczyciel"></td>-->
+<!--                    <td>-->
+<!--                        <div class="form-control">-->
+<!--                            <select class="form-control teacher-select">-->
+<!--                                {% for teacher in all_teachers %}-->
+<!--                                <option value="{{ teacher.id }}">{{ teacher.first_name }} {{ teacher.last_name }}</option>-->
+<!--                                {% endfor %}-->
+<!--                            </select>-->
+<!--                        </div>-->
+<!--                    </td>-->
 <!--                    <td><input type="text" class="form-control" placeholder="Termin zajęć"></td>-->
 <!--                    <td>-->
 <!--                        <div class="form-control">-->
@@ -193,13 +214,15 @@
 <!--                newRow.querySelector('.save-group').addEventListener('click', function () {-->
 <!--                    const inputs = newRow.querySelectorAll('input');-->
 <!--                    const studentSelect = newRow.querySelector('.student-select');-->
+<!--                    const teacherSelect = newRow.querySelector('.teacher-select');-->
 <!--                    const selectedStudents = Array.from(studentSelect.selectedOptions).map(option => option.value);-->
+<!--                    const selectedTeacher = teacherSelect.value;-->
 
 <!--                    const groupData = {-->
 <!--                        group_id: inputs[0].value.trim(),-->
 <!--                        language: inputs[1].value.trim(),-->
-<!--                        teacher: inputs[2].value.trim(),-->
-<!--                        schedule: inputs[3].value.trim(),-->
+<!--                        teacher: selectedTeacher,-->
+<!--                        schedule: inputs[2].value.trim(),-->
 <!--                        students: selectedStudents-->
 <!--                    };-->
 
@@ -328,7 +351,18 @@
                                 </select>
                             </div>
                         </td>
-                        <td><span>{{ group.schedule }}</span><input type="text" class="form-control d-none" value="{{ group.schedule }}"></td>
+                        <td>
+                            <span>{{ group.schedule }}</span>
+                            <div class="form-control d-none">
+                                <select class="form-control schedule-select">
+                                    {% for schedule in all_schedules %}
+                                    <option value="{{ schedule }}" {% if schedule == group.schedule %}selected{% endif %}>
+                                        {{ schedule }}
+                                    </option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </td>
                         <td>
                             <span>{{ group.students | join(', ') }}</span>
                             <div class="form-control d-none">
@@ -375,15 +409,17 @@
                     this.addEventListener('click', function saveGroupEdit() {
                         const studentSelect = row.querySelector('.student-select');
                         const teacherSelect = row.querySelector('.teacher-select');
+                        const scheduleSelect = row.querySelector('.schedule-select');
                         const selectedStudents = Array.from(studentSelect.selectedOptions).map(option => option.value);
                         const selectedTeacher = teacherSelect.value;
+                        const selectedSchedule = scheduleSelect.value;
 
                         const groupData = {
                             id: row.dataset.id,
                             group_id: row.querySelector('input').value.trim(),
                             language: row.querySelectorAll('input')[1].value.trim(),
                             teacher: selectedTeacher,
-                            schedule: row.querySelectorAll('input')[3].value.trim(),
+                            schedule: selectedSchedule,
                             students: selectedStudents
                         };
 
@@ -422,7 +458,15 @@
                             </select>
                         </div>
                     </td>
-                    <td><input type="text" class="form-control" placeholder="Termin zajęć"></td>
+                    <td>
+                        <div class="form-control">
+                            <select class="form-control schedule-select">
+                                {% for schedule in all_schedules %}
+                                <option value="{{ schedule }}">{{ schedule }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </td>
                     <td>
                         <div class="form-control">
                             <select multiple class="form-control student-select">
@@ -439,14 +483,16 @@
                     const inputs = newRow.querySelectorAll('input');
                     const studentSelect = newRow.querySelector('.student-select');
                     const teacherSelect = newRow.querySelector('.teacher-select');
+                    const scheduleSelect = newRow.querySelector('.schedule-select');
                     const selectedStudents = Array.from(studentSelect.selectedOptions).map(option => option.value);
                     const selectedTeacher = teacherSelect.value;
+                    const selectedSchedule = scheduleSelect.value;
 
                     const groupData = {
                         group_id: inputs[0].value.trim(),
                         language: inputs[1].value.trim(),
                         teacher: selectedTeacher,
-                        schedule: inputs[2].value.trim(),
+                        schedule: selectedSchedule,
                         students: selectedStudents
                     };
 
@@ -468,4 +514,3 @@
     </script>
 </body>
 </html>
-
