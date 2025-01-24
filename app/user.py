@@ -90,7 +90,9 @@ class UserRepo:
         print("Tables created successfully.")
 
 if __name__ == "__main__":
+    with app.app_context():
 
+        user_repo = UserRepo(db.session)
 
         # Wyświetlenie wszystkich użytkowników
         users = user_repo.find()
