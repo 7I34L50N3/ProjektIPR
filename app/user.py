@@ -28,10 +28,10 @@ class User(db.Model):
     def logout(self):
         print(f"User {self.username} logged out.")
 
-    def change_password(self, session, new_password):
+    def change_password(self, new_password):
         new_password = sha256(new_password.encode()).hexdigest()
         self.password = new_password
-        session.commit()
+        db.session.commit()
         print(f"Password changed for user {self.username}.")
 
     def check_info(self):

@@ -4,6 +4,7 @@ from user import UserRepo, User
 from student import Student
 from admin import Admin
 from globals import app
+from hashlib import sha256
 
 import logging
 
@@ -109,8 +110,13 @@ class ChangePasswordApi:
                 flash("Użytkownik nie istnieje", "error")
                 return redirect(url_for('change_password'))
 
-            user.change_password(current_password, new_password)
+            hashed_password = sha256(current_password.encode()).hexdigest()
+            if user.password != hashed_password:
+                flash("Nieprawidłowe obecne hasło", "error")
+                return redirect(url_for('change_password'))
 
+            user.change_password(new_password)
+            flash("Hasło zostało zmienione", "info")
             print(f'{current_password} | {new_password} | {confirm_password}')
 
         return redirect(url_for('account_info'))
