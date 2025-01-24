@@ -15,6 +15,7 @@ class Group(db.Model):
     name = db.Column(db.String(100), nullable=False, unique=True)
     description = db.Column(db.String(255), nullable=True)
     users = relationship('User', secondary=user_group_association, back_populates='groups', lazy='dynamic')
+    #marks = relationship('Mark', back_populates='group', lazy='dynamic')
 
     def __repr__(self):
         return f"<Group {self.name}>"
@@ -50,6 +51,7 @@ class GroupRepo:
 
     def find_by_argument(self, **kwargs):
         return Group.query.filter_by(**kwargs).one()
+
 
     def delete(self, group_id):
         group = Group.query.get(group_id)

@@ -17,8 +17,8 @@ class Student(User):
 if __name__ == "__main__":
     with app.app_context():
         db.create_all()
-        student = student.query.filter_by(username="Janektehbuilder").first()
-
+        student = Student.query.filter_by(username="Janekthebuilder").first()
+        #group = GroupRepo.find_by_argument(name="Beginner English")
         # Dodaj nową ocenę
         mark1 = Mark(value=4.5, description="Egzamin końcowy", student=student)
         mark2 = Mark(value=5.0, description="Sprawdzian z algebry", student=student)
