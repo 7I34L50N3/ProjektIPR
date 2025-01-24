@@ -128,3 +128,26 @@ class AdminApi:
             'added_date': '16.12.2024',
         }
         return render_template("account_info.html", **user_data)
+
+
+class UserApi:
+    _instance = None
+
+    def __new__(cls, *args, **kwargs):
+        if cls._instance is None:
+            cls._instance = super(UserApi, cls).__new__(cls, *args, **kwargs)
+        return cls._instance
+
+    def register_routes(self, app):
+        app.add_url_rule('/users', 'users', self.users, methods=['GET'])
+
+    def users(self):
+        users_data = {
+            "users": [
+                {"first_name": "Wanda", "last_name": "Narkiewicz", "role": "Student", "account": "wannar01",
+                "password": "*****"},
+                {"first_name": "Adam", "last_name": "Kowalski", "role": "Teacher", "account": "adamkow",
+                "password": "*****"}
+            ]
+        }
+        return render_template("users.html", **users_data)
