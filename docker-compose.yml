@@ -31,18 +31,5 @@ services:
     volumes:
       - mysql_data:/var/lib/mysql
 
-  vue:
-    build: ./frontend
-    platform: linux/amd64
-    container_name: vue
-    ports:
-      - "8080:8080"
-    volumes:
-      - ./frontend:/app/frontend
-      - /app/frontend/node_modules
-    command: npm run dev
-    environment:
-      - NODE_ENV=development
-
 volumes:
   mysql_data:
