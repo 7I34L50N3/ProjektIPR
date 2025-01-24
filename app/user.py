@@ -4,7 +4,7 @@ from sqlalchemy import Column, Integer, String, Table, ForeignKey
 from sqlalchemy.exc import OperationalError, NoResultFound
 from sqlalchemy.orm import relationship
 from Group import Group, GroupRepo
-from Global import app, db
+from Global import app, db, user_group_association
 
 
 
@@ -17,9 +17,7 @@ class User(db.Model):
     email = Column(String(100), nullable=False, unique=True)  # Dodano długość VARCHAR
     name = Column(String(50), nullable=False)  # Dodano długość VARCHAR
     surname = Column(String(50), nullable=False)  # Dodano długość VARCHAR
-
-    # Relacja wiele-do-wielu z grupami
-    groups = relationship('Group', secondary=user_group_association, back_populates='users')
+    groups = relationship('Group', secondary=user_group_association, back_populates='users', lazy='dynamic')
 
     def logout(self):
         print(f"User {self.username} logged out.")
@@ -37,15 +35,6 @@ class User(db.Model):
             "surname": self.surname,
             "groups": [group.name for group in self.groups]  # Wyświetla nazwy grup
         }
-
-class Group(db.Model):
-    __tablename__ = 'groups'
-
-    id = Column(Integer, primary_key=True, autoincrement=True)
-    name = Column(String(100), nullable=False, unique=True)  # Dodano długość VARCHAR
-
-    # Relacja wiele-do-wielu z użytkownikami
-    users = relationship('User', secondary=user_group_association, back_populates='groups')
 
 class UserRepo:
     _instance = None
@@ -107,8 +96,9 @@ if __name__ == "__main__":
 
 
         # Przypisywanie użytkowników do grup
-        user1 = user_repo.find_by_argument(username="john_doe")
-        group = GroupRepo().find_by_argument(name="Beginner English")
+        user1 = user_repo.find_by_argument(username="fuck.doe")
+        group1 = GroupRepo().find_by_argument(name="Beginner English")
+        print(user1, group1)
         user1.groups.append(group1)
         db.session.commit()
 
