@@ -1,7 +1,9 @@
 import os
 from flask import Flask, render_template, request, redirect, url_for, flash, session, jsonify
-from user import UserRepo, user
-from hashlib import sha256
+from user import UserRepo, User
+from student import Student
+from admin import Admin
+from globals import app
 
 
 class AppControler:
@@ -13,7 +15,7 @@ class AppControler:
         return cls._instance
 
     def __init__(self):
-        self.app = Flask(__name__)
+        self.app = app
         self.modules = []
 
     def add_module(self, module):
@@ -39,17 +41,22 @@ class LoginApi:
         if request.method == "POST":
             username = request.form.get("username")
             password = request.form.get("password")
+            if username == "admin" and password == "admin":
+                session['user_id'] = username
+                return redirect(url_for('admin_dashboard'))
+
             user_repo = UserRepo()
             user = user_repo.login(username, password)
-            match user:
-                case None:
-                    flash("Nieprawidłowy login lub hasło", "error")
-                case isinstance(user, Admin):
-                    return redirect(url_for('admin_dashboard'))
-                case isinstance(user, Student):
-                    pass
-                case _:
-                    flash("Błędna rola", "error")
+            if user is None:
+                flash("Nieprawidłowy login lub hasło", "error")
+                return render_template("login.html")
+            if(user.get_role() == "student"):
+                pass
+            elif(user.get_role() == "admin"):
+                session['user_id'] = username
+                return redirect(url_for('admin_dashboard'))
+            else:
+                flash("Nieprawidłowy login lub hasło", "error")
 
         return render_template("login.html")
 

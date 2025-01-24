@@ -43,6 +43,8 @@ class User(db.Model):
             "groups": [group.name for group in self.groups],  # Wyświetla nazwy grup
             "role": self.role
         }
+    def get_role(self):
+        return self.role
 
 class UserRepo:
     _instance = None

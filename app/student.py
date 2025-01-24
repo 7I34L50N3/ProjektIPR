@@ -2,7 +2,7 @@ from user import UserRepo,User
 from group import GroupRepo
 from globals import db,app
 
-class student(User):
+class Student(User):
     __mapper_args__ = {
         'polymorphic_identity': 'student',
     }
