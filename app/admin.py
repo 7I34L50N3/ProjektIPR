@@ -8,7 +8,7 @@ class Admin(User):
     def __init__(self,session,**kwargs):
         super().__init__(**kwargs)  # Wywołanie konstruktora User
         self.user_repo = UserRepo(session)
-        self.group_repo = GroupRepo(session)
+        self.group_repo = GroupRepo()
 
     # Dodawanie nowego użytkownika
     def add_user(self, username, password, email, name, surname, role="user"):
@@ -71,10 +71,10 @@ if __name__ == "__main__":
         admin= Admin(db.session)
 
         admin.add_user(
-            username="franekthebuilder",
-            password="12345",
-            email="franek@destroyer.com",
-            name="franek",
-            surname="żyd3",
-            role="student"
+            username="dzbanekthebuilder",
+            password="123456",
+            email="Krys@destroyer.com",
+            name="krystian",
+            surname="grappa",
+            role="admin"
         )
