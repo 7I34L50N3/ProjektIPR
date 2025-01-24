@@ -21,6 +21,11 @@ class User(db.Model):
     role = Column(String(50), nullable=False)  # Dodano długość VARCHAR
     groups = relationship('Group', secondary=user_group_association, back_populates='users', lazy='dynamic')
 
+    __mapper_args__ = {
+        'polymorphic_identity': 'user',
+        'polymorphic_on': role,
+        'with_polymorphic': '*'
+    }
     def logout(self):
         print(f"User {self.username} logged out.")
 
