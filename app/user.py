@@ -5,6 +5,7 @@ from sqlalchemy.exc import OperationalError, NoResultFound
 from sqlalchemy.orm import relationship
 from group import Group, GroupRepo
 from globals import app, db, user_group_association
+from hashlib import sha512
 
 
 
@@ -24,6 +25,7 @@ class User(db.Model):
         print(f"User {self.username} logged out.")
 
     def change_password(self, session, new_password):
+        new_password = sha512(new_password.encode()).hexdigest()
         self.password = new_password
         session.commit()
         print(f"Password changed for user {self.username}.")
@@ -50,8 +52,9 @@ class UserRepo:
     def find(self):
         return self.session.query(User).all()
 
-    def create(self, username, password, email, name, surname):
-        user = User(username=username, password=password, email=email, name=name, surname=surname)
+    def create(self, username, password, email, name, surname, role):
+        password = sha512(password.encode()).hexdigest()
+        user = User(username=username, password=password, email=email, name=name, surname=surname, role=role)
         self.session.add(user)
         self.session.commit()
         return user
@@ -67,6 +70,8 @@ class UserRepo:
         if not user:
             return None
         for key, value in kwargs.items():
+            if key == 'password':
+                value = sha512(value.encode()).hexdigest()
             setattr(user, key, value)
         self.session.commit()
         return user
@@ -78,8 +83,10 @@ class UserRepo:
             self.session.commit()
 
     def login(self, username, password):
-        user = self.session.query(User).filter_by(username=username, password=password).first()
-        if user:
+        user = self.session.query(User).filter_by(username=username).first()
+
+        password = sha512(password.encode()).hexdigest()
+        if user and user.password == password:
             return user
         else:
             return None
@@ -92,19 +99,21 @@ class UserRepo:
 if __name__ == "__main__":
     with app.app_context():
         # Tworzenie tabel
-        UserRepo.create_tables()
-
+        # UserRepo.create_tables()
+        #
         user_repo = UserRepo(db.session)  # Singleton
 
 
         # Przypisywanie użytkowników do grup
-        # user1 = user_repo.find_by_argument(username="fuck.doe")
+        user1 = user_repo.find_by_argument(username="fuck.doe")
+        user1.change_password(db.session,"test123")
+
         # group1 = GroupRepo().find_by_argument(name="Beginner English")
         # print(user1, group1)
         # user1.groups.append(group1)
         db.session.commit()
 
         # Wyświetlenie wszystkich użytkowników i ich grup
-        users = user_repo.find()
-        for user in users:
-            print(user.check_info())
+        # users = user_repo.find()
+        # for user in users:
+        #     print(user.check_info())
