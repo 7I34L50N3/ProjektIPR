@@ -8,7 +8,6 @@ from globals import app, db, user_group_association
 from hashlib import sha256
 
 
-
 class User(db.Model):
     __tablename__ = 'users'
 
@@ -110,8 +109,8 @@ if __name__ == "__main__":
 
 
         # Przypisywanie użytkowników do grup
-        user1 = user_repo.find_by_argument(username="fuck.doe")
-        user1.change_password(db.session,"test123")
+        user1 = user_repo.find_by_argument(username="ke.smith")
+        user1.change_password(db.session,"123")
 
         # group1 = GroupRepo().find_by_argument(name="Beginner English")
         # print(user1, group1)

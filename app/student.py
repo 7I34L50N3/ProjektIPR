@@ -3,9 +3,11 @@ from group import GroupRepo
 from globals import db,app
 
 class student(User):
+    __mapper_args__ = {
+        'polymorphic_identity': 'student',
+    }
     def check_marks(self):
         pass
 
     def check_groups(self):
-        groups = [group.name for group in self.groups]
-        return groups
+        return self.groups
