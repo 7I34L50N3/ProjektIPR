@@ -2,8 +2,9 @@ import os
 from flask import Flask, render_template, request, redirect, url_for, flash, session, jsonify
 from user import UserRepo, User
 from student import Student
+from group import Group
 from admin import Admin
-from globals import app
+from globals import app, db
 from hashlib import sha256
 
 import logging
@@ -146,11 +147,14 @@ class AdminApi:
             flash("Nie masz uprawnień do tej strony", "error")
             return redirect(url_for('login'))
 
+        students_count = db.session.query(Student).count()
+        groups_count = db.session.query(Group).count()
+
         dashboard_data = {
             'username': user_id,
-            'students': 50,
+            'students': students_count,
             'teachers': 4,
-            'groups': 5
+            'groups': groups_count
         }
         return render_template("admin_dashboard.html", **dashboard_data)
 
@@ -163,7 +167,6 @@ class AdminApi:
         user_repo = UserRepo()
         user = user_repo.find_by_argument(username=session.get('user_id'))
         user_data = user.check_info()
-
         return render_template("account_info.html", **user_data)
 
 
@@ -185,10 +188,13 @@ class UserApi:
         if not user_id:
             flash("Musisz być zalogowany, aby uzyskać dostęp do tej strony.", "error")
             return redirect(url_for('login'))
-        user_repo=UserRepo()
-        all_user = user_repo.find()
+
         users_data = {
-            "users": [user.check_info() for user in all_user]}
+            "users": [
+                {"id": 1, "first_name": "Wanda", "last_name": "Narkiewicz", "role": "Student", "account": "wannar01", "password": "*****"},
+                {"id": 2, "first_name": "Adam", "last_name": "Kowalski", "role": "Teacher", "account": "adamkow", "password": "*****"}
+            ]
+        }
         return render_template("users.html", **users_data)
 
     def add_user(self):
