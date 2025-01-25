@@ -47,11 +47,31 @@ class UserApi:
         name = user_data.get('first_name')
         surname = user_data.get('last_name')
         role = user_data.get('role')
-        email = f"{name.lower()}.{surname.lower()}@lingduo.com"
+        email = f"{username.lower()}@lingduo.com"
+
+
+        user_repo = UserRepo()
+        user = user_repo.create(username, password, email, name, surname, role)
+        db.session.add(user)
+        db.session.commit()
 
         return jsonify({"message": "Użytkownik został dodany pomyślnie!"}), 200
 
     def edit_user(self):
         user_data = request.get_json()
-        logger.info(user_data)
-        return jsonify({"message": "Zmiany zapisane pomyślnie!"}), 200
+        username = user_data.get('account')
+        password = user_data.get('password')
+        password = sha256(password.encode()).hexdigest()
+        name = user_data.get('first_name')
+        surname = user_data.get('last_name')
+        role = user_data.get('role')
+
+        user_repo = UserRepo()
+        user = user_repo.find_by_argument(username=username)
+        user_id = user.check_info().get('id')
+
+        update_data={"username":username, "passowrd": password, "name":name, "surname":surname, "role":role}
+        updated_user = user_repo.update( user_id,**update_data)
+
+
+        return jsonify({"message": "Zmiany zapisane pomyślnie!","user": updated_user.check_info()}), 200

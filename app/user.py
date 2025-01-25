@@ -111,7 +111,7 @@ if __name__ == "__main__":
         # UserRepo.create_tables()
         #
         user_repo = UserRepo()  # Singleton
-
+        # Dodawanie użytkowników
 
         # Przypisywanie użytkowników do grup
         user1 = user_repo.find_by_argument(username="Janekthebuilder")
