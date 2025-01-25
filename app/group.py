@@ -5,7 +5,7 @@ from sqlalchemy.exc import OperationalError
 from sqlalchemy.sql import text
 from sqlalchemy.orm import relationship
 from globals import app, db, user_group_association
-
+import json
 
 
 class Group(db.Model):
@@ -19,9 +19,9 @@ class Group(db.Model):
     marks = relationship('Mark', back_populates='group', lazy='dynamic')
     def check_info_group(self):
         return {
-            "id": self.id,
-            "name": self.name,
-            "schedule": self.schedule
+            "group_id": self.id,
+            "language": self.name,
+            "schedule": json.loads(self.schedule)
         }
     def __repr__(self):
         return f"<Group {self.name}>"
