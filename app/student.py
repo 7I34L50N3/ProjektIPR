@@ -34,8 +34,17 @@ if __name__ == "__main__":
         # for mark in student.check_marks():
         #     print(f"- {mark.value}: {mark.description}")
 
-
-        user_repo = UserRepo()  # Singleton
-        user1 = user_repo.find_by_argument(username="Janekthebuilder")
-        user1.change_password(db.session, "123")
+        # UserRepo.create_tables()
+        # user_repo = UserRepo()  # Singleton
+        # student = user_repo.create(
+        #     username="student",
+        #     password="student",
+        #     email="student01@example.com",
+        #     name="student",
+        #     surname="Kowalski",
+        #     role="student"
+        # )
+        # user_repo = UserRepo()  # Singleton
+        # user1 = user_repo.find_by_argument(username="Janekthebuilder")
+        # user1.change_password(db.session, "123")
         db.session.commit()
