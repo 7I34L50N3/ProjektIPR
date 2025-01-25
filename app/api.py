@@ -239,34 +239,45 @@ class GroupApi:
         group_repo = GroupRepo()
         all_groups = group_repo.find()
         groups_data = {
-            #"groups": [Group.check_info_group() for Group in all_groups]}
-
             "groups": [
                 {
-                    "id": 1,
-                    "group_id": "021_WT",
-                    "language": "Niemiecki",
-                    "teacher": "Adolf H.",
-                    "teacher_id": 1,  # ID nauczyciela
-                    "schedule": "Śr. 15:40",
-                    "student_ids": [1, 2],
-                    "students": ["Wanda", "Karolina"]
+                    **group.check_info_group(),
+                    "student": [user.username for user in group.users],
+                    "teacher": "Aneta Glapinska"
                 }
-            ],
-            "all_students": [
-                {"id": 1, "first_name": "Wanda", "last_name": "Narkiewicz"},
-                {"id": 2, "first_name": "Karolina", "last_name": "Nowak"},
-                {"id": 3, "first_name": "Waldek", "last_name": "Kowalski"},
-                {"id": 4, "first_name": "Jędrzej", "last_name": "Bąk"}
-            ],
-            "all_teachers": [
-                {"id": 1, "first_name": "Adolf", "last_name": "H."},
-                {"id": 2, "first_name": "Anna", "last_name": "Kowalska"},
-                {"id": 3, "first_name": "Jan", "last_name": "Nowak"}
-            ],
-            "all_schedules": ["Pn. 9:00", "Śr. 15:40", "Pt. 18:00"],
-            "all_languages": ["Niemiecki", "Angielski", "Francuski", "Hiszpański"]
+                for group in all_groups
+            ]
         }
+            #"groups": [Group.check_info_group() for Group in all_groups]}
+
+        #     "groups": [
+        #         {
+        #             #group.check_info_group() for group in all_groups
+        #             # "id": 1,
+        #             # "group_id": "021_WT",
+        #             # "language": "Niemiecki",
+        #             # "teacher": "Adolf H.",
+        #             # "teacher_id": 1,  # ID nauczyciela
+        #             # "schedule": "Śr. 15:40",
+        #             # "student_ids": [1, 2],
+        #             # "students": ["Wanda", "Karolina"]
+        #         }
+        #     ],
+        #     "all_students": [
+        #
+        #         # {"id": 1, "first_name": "Wanda", "last_name": "Narkiewicz"},
+        #         # {"id": 2, "first_name": "Karolina", "last_name": "Nowak"},
+        #         # {"id": 3, "first_name": "Waldek", "last_name": "Kowalski"},
+        #         # {"id": 4, "first_name": "Jędrzej", "last_name": "Bąk"}
+        #     ],
+        #     "all_teachers": [
+        #         {"id": 1, "first_name": "Adolf", "last_name": "H."},
+        #         {"id": 2, "first_name": "Anna", "last_name": "Kowalska"},
+        #         {"id": 3, "first_name": "Jan", "last_name": "Nowak"}
+        #     ],
+        #     "all_schedules": ["Pn. 9:00", "Śr. 15:40", "Pt. 18:00"],
+        #     "all_languages": ["Niemiecki", "Angielski", "Francuski", "Hiszpański"]
+        # }
         return render_template("groups.html", **groups_data)
 
     def edit(self):

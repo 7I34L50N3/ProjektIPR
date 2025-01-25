@@ -21,7 +21,7 @@ class Group(db.Model):
         return {
             "id": self.id,
             "name": self.name,
-            "description": self.description
+            "schedule": self.schedule
         }
     def __repr__(self):
         return f"<Group {self.name}>"
