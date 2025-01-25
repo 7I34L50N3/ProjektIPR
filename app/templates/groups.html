@@ -1,296 +1,3 @@
-<!--<!DOCTYPE html>-->
-<!--<html lang="pl">-->
-<!--<head>-->
-<!--    <meta charset="UTF-8">-->
-<!--    <meta name="viewport" content="width=device-width, initial-scale=1.0">-->
-<!--    <title>LingDuo</title>-->
-<!--    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">-->
-<!--    <style>-->
-<!--        body {-->
-<!--            margin: 0;-->
-<!--            background-color: #f8f9fa;-->
-<!--            font-family: Arial, sans-serif;-->
-<!--            height: 100vh;-->
-<!--            display: flex;-->
-<!--            flex-direction: column;-->
-<!--        }-->
-<!--        .navbar {-->
-<!--            background-color: #ffffff;-->
-<!--            border-bottom: 1px solid #ddd;-->
-<!--            padding: 0 20px;-->
-<!--            display: flex;-->
-<!--            justify-content: space-between;-->
-<!--            align-items: center;-->
-<!--        }-->
-<!--        .navbar a {-->
-<!--            color: #000;-->
-<!--            text-decoration: none;-->
-<!--            margin-right: 15px;-->
-<!--        }-->
-<!--        .navbar .btn-danger {-->
-<!--            text-decoration: none;-->
-<!--            padding: 5px 15px;-->
-<!--            border-radius: 5px;-->
-<!--            color: #fff;-->
-<!--            background-color: #dc3545;-->
-<!--            border: none;-->
-<!--        }-->
-<!--        .navbar .btn-danger:hover {-->
-<!--            background-color: #c82333;-->
-<!--            text-decoration: none;-->
-<!--        }-->
-<!--        .main-container {-->
-<!--            flex: 1;-->
-<!--            display: flex;-->
-<!--            flex-direction: column;-->
-<!--            padding: 20px;-->
-<!--        }-->
-<!--        .table-container {-->
-<!--            background-color: #ffffff;-->
-<!--            border: 1px solid #ddd;-->
-<!--            border-radius: 8px;-->
-<!--            padding: 15px;-->
-<!--            overflow-x: auto;-->
-<!--        }-->
-<!--        .table-container h5 {-->
-<!--            text-align: center;-->
-<!--            margin-bottom: 15px;-->
-<!--        }-->
-<!--        .btn {-->
-<!--            margin: 10px;-->
-<!--        }-->
-<!--    </style>-->
-<!--</head>-->
-<!--<body>-->
-<!--    &lt;!&ndash; Navbar &ndash;&gt;-->
-<!--    <div class="navbar">-->
-<!--        <div>-->
-<!--            <a href="{{ url_for('admin_dashboard') }}">Home</a>-->
-<!--            <a href="{{ url_for('users') }}" class="active">Konta</a>-->
-<!--            <a href="{{ url_for('groups') }}" class="active">Grupy</a>-->
-<!--        </div>-->
-<!--        <a href="{{ url_for('logout') }}" class="btn btn-danger">Wyloguj</a>-->
-<!--    </div>-->
-
-<!--    &lt;!&ndash; Main Content &ndash;&gt;-->
-<!--    <div class="main-container">-->
-<!--        <div class="table-container">-->
-<!--            <h5>Stworzone Grupy</h5>-->
-<!--            <table class="table table-bordered" id="groups-table">-->
-<!--                <thead>-->
-<!--                    <tr>-->
-<!--                        <th>Id_grupy</th>-->
-<!--                        <th>Język</th>-->
-<!--                        <th>Nauczyciel</th>-->
-<!--                        <th>Termin zajęć</th>-->
-<!--                        <th>Przypisani Uczniowie</th>-->
-<!--                        <th>Akcje</th>-->
-<!--                    </tr>-->
-<!--                </thead>-->
-<!--                <tbody>-->
-<!--                    {% for group in groups %}-->
-<!--                    <tr data-id="{{ group.id }}">-->
-<!--                        <td><span>{{ group.group_id }}</span><input type="text" class="form-control d-none" value="{{ group.group_id }}"></td>-->
-<!--                        <td>-->
-<!--                            <span>{{ group.language }}</span>-->
-<!--                            <div class="form-control d-none">-->
-<!--                                <select class="form-control language-select">-->
-<!--                                    {% for language in all_languages %}-->
-<!--                                    <option value="{{ language }}" {% if language == group.language %}selected{% endif %}>-->
-<!--                                        {{ language }}-->
-<!--                                    </option>-->
-<!--                                    {% endfor %}-->
-<!--                                </select>-->
-<!--                            </div>-->
-<!--                        </td>-->
-<!--                        <td>-->
-<!--                            <span>{{ group.teacher }}</span>-->
-<!--                            <div class="form-control d-none">-->
-<!--                                <select class="form-control teacher-select">-->
-<!--                                    {% for teacher in all_teachers %}-->
-<!--                                    <option value="{{ teacher.id }}" {% if teacher.id == group.teacher_id %}selected{% endif %}>-->
-<!--                                        {{ teacher.first_name }} {{ teacher.last_name }}-->
-<!--                                    </option>-->
-<!--                                    {% endfor %}-->
-<!--                                </select>-->
-<!--                            </div>-->
-<!--                        </td>-->
-<!--                        <td>-->
-<!--                            <span>{{ group.schedule }}</span>-->
-<!--                            <div class="form-control d-none">-->
-<!--                                <select class="form-control schedule-select">-->
-<!--                                    {% for schedule in all_schedules %}-->
-<!--                                    <option value="{{ schedule }}" {% if schedule == group.schedule %}selected{% endif %}>-->
-<!--                                        {{ schedule }}-->
-<!--                                    </option>-->
-<!--                                    {% endfor %}-->
-<!--                                </select>-->
-<!--                            </div>-->
-<!--                        </td>-->
-<!--                        <td>-->
-<!--                            <span>{{ group.students | join(', ') }}</span>-->
-<!--                            <div class="form-control d-none">-->
-<!--                                <select multiple class="form-control student-select">-->
-<!--                                    {% for student in all_students %}-->
-<!--                                    <option value="{{ student.id }}" {% if student.id in group.student_ids %}selected{% endif %}>-->
-<!--                                        {{ student.first_name }} {{ student.last_name }}-->
-<!--                                    </option>-->
-<!--                                    {% endfor %}-->
-<!--                                </select>-->
-<!--                            </div>-->
-<!--                        </td>-->
-<!--                        <td>-->
-<!--                            <button class="btn btn-warning btn-sm edit-group">Edytuj</button>-->
-<!--                        </td>-->
-<!--                    </tr>-->
-<!--                    {% endfor %}-->
-<!--                </tbody>-->
-<!--            </table>-->
-<!--            <div>-->
-<!--                <button class="btn btn-primary" id="add-group">Utwórz nową grupę</button>-->
-<!--            </div>-->
-<!--        </div>-->
-<!--    </div>-->
-
-<!--    <script>-->
-<!--        document.addEventListener('DOMContentLoaded', () => {-->
-<!--            // Edycja istniejących grup-->
-<!--            document.querySelectorAll('.edit-group').forEach(button => {-->
-<!--                button.addEventListener('click', function () {-->
-<!--                    const row = this.closest('tr');-->
-<!--                    const spans = row.querySelectorAll('span');-->
-<!--                    const inputs = row.querySelectorAll('input, select');-->
-
-<!--                    spans.forEach(span => span.classList.add('d-none'));-->
-<!--                    inputs.forEach(input => input.closest('div').classList.remove('d-none'));-->
-
-<!--                    this.textContent = 'Zapisz';-->
-<!--                    this.classList.remove('btn-warning');-->
-<!--                    this.classList.add('btn-success');-->
-<!--                    this.classList.remove('edit-group');-->
-<!--                    this.classList.add('save-edit-group');-->
-
-<!--                    this.addEventListener('click', function saveGroupEdit() {-->
-<!--                        const studentSelect = row.querySelector('.student-select');-->
-<!--                        const teacherSelect = row.querySelector('.teacher-select');-->
-<!--                        const scheduleSelect = row.querySelector('.schedule-select');-->
-<!--                        const languageSelect = row.querySelector('.language-select');-->
-<!--                        const selectedStudents = Array.from(studentSelect.selectedOptions).map(option => option.value);-->
-<!--                        const selectedTeacher = teacherSelect.value;-->
-<!--                        const selectedSchedule = scheduleSelect.value;-->
-<!--                        const selectedLanguage = languageSelect.value;-->
-
-<!--                        const groupData = {-->
-<!--                            id: row.dataset.id,-->
-<!--                            group_id: row.querySelector('input').value.trim(),-->
-<!--                            language: selectedLanguage,-->
-<!--                            teacher: selectedTeacher,-->
-<!--                            schedule: selectedSchedule,-->
-<!--                            students: selectedStudents-->
-<!--                        };-->
-
-<!--                        fetch('/edit_group', {-->
-<!--                            method: 'POST',-->
-<!--                            headers: { 'Content-Type': 'application/json' },-->
-<!--                            body: JSON.stringify(groupData)-->
-<!--                        }).then(response => {-->
-<!--                            if (response.ok) {-->
-<!--                                alert('Zmiany zapisane!');-->
-<!--                                location.reload();-->
-<!--                            } else {-->
-<!--                                alert('Błąd przy zapisie.');-->
-<!--                            }-->
-<!--                        });-->
-
-<!--                        this.removeEventListener('click', saveGroupEdit);-->
-<!--                    }, { once: true });-->
-<!--                });-->
-<!--            });-->
-
-<!--            // Dodawanie nowej grupy-->
-<!--            document.getElementById('add-group').addEventListener('click', function () {-->
-<!--                const table = document.getElementById('groups-table').getElementsByTagName('tbody')[0];-->
-<!--                const newRow = table.insertRow();-->
-
-<!--                newRow.innerHTML = `-->
-<!--                    <td><input type="text" class="form-control" placeholder="Id grupy"></td>-->
-<!--                    <td>-->
-<!--                        <div class="form-control">-->
-<!--                            <select class="form-control language-select">-->
-<!--                                {% for language in all_languages %}-->
-<!--                                <option value="{{ language }}">{{ language }}</option>-->
-<!--                                {% endfor %}-->
-<!--                            </select>-->
-<!--                        </div>-->
-<!--                    </td>-->
-<!--                    <td>-->
-<!--                        <div class="form-control">-->
-<!--                            <select class="form-control teacher-select">-->
-<!--                                {% for teacher in all_teachers %}-->
-<!--                                <option value="{{ teacher.id }}">{{ teacher.first_name }} {{ teacher.last_name }}</option>-->
-<!--                                {% endfor %}-->
-<!--                            </select>-->
-<!--                        </div>-->
-<!--                    </td>-->
-<!--                    <td>-->
-<!--                        <div class="form-control">-->
-<!--                            <select class="form-control schedule-select">-->
-<!--                                {% for schedule in all_schedules %}-->
-<!--                                <option value="{{ schedule }}">{{ schedule }}</option>-->
-<!--                                {% endfor %}-->
-<!--                            </select>-->
-<!--                        </div>-->
-<!--                    </td>-->
-<!--                    <td>-->
-<!--                        <div class="form-control">-->
-<!--                            <select multiple class="form-control student-select">-->
-<!--                                {% for student in all_students %}-->
-<!--                                <option value="{{ student.id }}">{{ student.first_name }} {{ student.last_name }}</option>-->
-<!--                                {% endfor %}-->
-<!--                            </select>-->
-<!--                        </div>-->
-<!--                    </td>-->
-<!--                    <td><button class="btn btn-success btn-sm save-group">Zapisz</button></td>-->
-<!--                `;-->
-
-<!--                newRow.querySelector('.save-group').addEventListener('click', function () {-->
-<!--                    const inputs = newRow.querySelectorAll('input');-->
-<!--                    const studentSelect = newRow.querySelector('.student-select');-->
-<!--                    const teacherSelect = newRow.querySelector('.teacher-select');-->
-<!--                    const scheduleSelect = newRow.querySelector('.schedule-select');-->
-<!--                    const languageSelect = newRow.querySelector('.language-select');-->
-<!--                    const selectedStudents = Array.from(studentSelect.selectedOptions).map(option => option.value);-->
-<!--                    const selectedTeacher = teacherSelect.value;-->
-<!--                    const selectedSchedule = scheduleSelect.value;-->
-<!--                    const selectedLanguage = languageSelect.value;-->
-
-<!--                    const groupData = {-->
-<!--                        group_id: inputs[0].value.trim(),-->
-<!--                        language: selectedLanguage,-->
-<!--                        teacher: selectedTeacher,-->
-<!--                        schedule: selectedSchedule,-->
-<!--                        students: selectedStudents-->
-<!--                    };-->
-
-<!--                    fetch('/add_group', {-->
-<!--                        method: 'POST',-->
-<!--                        headers: { 'Content-Type': 'application/json' },-->
-<!--                        body: JSON.stringify(groupData)-->
-<!--                    }).then(response => {-->
-<!--                        if (response.ok) {-->
-<!--                            alert('Grupa dodana!');-->
-<!--                            location.reload();-->
-<!--                        } else {-->
-<!--                            alert('Błąd przy dodawaniu.');-->
-<!--                        }-->
-<!--                    });-->
-<!--                });-->
-<!--            });-->
-<!--        });-->
-<!--    </script>-->
-<!--</body>-->
-<!--</html>-->
-
 <!DOCTYPE html>
 <html lang="pl">
 <head>
@@ -383,54 +90,49 @@
                 <tbody>
                     {% for group in groups %}
                     <tr data-id="{{ group.id }}">
-                        <td><span>{{ group.group_id }}</span><input type="text" class="form-control d-none" value="{{ group.group_id }}"></td>
+                        <td>
+                            <span>{{ group.group_id }}</span>
+                            <input type="text" class="form-control d-none" value="{{ group.group_id }}">
+                        </td>
                         <td>
                             <span>{{ group.language }}</span>
-                            <div class="form-control d-none">
-                                <select class="form-control language-select">
-                                    {% for language in all_languages %}
-                                    <option value="{{ language }}" {% if language == group.language %}selected{% endif %}>
-                                        {{ language }}
-                                    </option>
-                                    {% endfor %}
-                                </select>
-                            </div>
+                            <select class="form-control d-none language-select">
+                                {% for language in all_languages %}
+                                <option value="{{ language }}" {% if language == group.language %}selected{% endif %}>
+                                    {{ language }}
+                                </option>
+                                {% endfor %}
+                            </select>
                         </td>
                         <td>
                             <span>{{ group.teacher }}</span>
-                            <div class="form-control d-none">
-                                <select class="form-control teacher-select">
-                                    {% for teacher in all_teachers %}
-                                    <option value="{{ teacher.id }}" {% if teacher.id == group.teacher_id %}selected{% endif %}>
-                                        {{ teacher.first_name }} {{ teacher.last_name }}
-                                    </option>
-                                    {% endfor %}
-                                </select>
-                            </div>
+                            <select class="form-control d-none teacher-select">
+                                {% for teacher in all_teachers %}
+                                <option value="{{ teacher.id }}" {% if teacher.id == group.teacher_id %}selected{% endif %}>
+                                    {{ teacher.first_name }} {{ teacher.last_name }}
+                                </option>
+                                {% endfor %}
+                            </select>
                         </td>
                         <td>
                             <span>{{ group.schedule }}</span>
-                            <div class="form-control d-none">
-                                <select class="form-control schedule-select">
-                                    {% for schedule in all_schedules %}
-                                    <option value="{{ schedule }}" {% if schedule == group.schedule %}selected{% endif %}>
-                                        {{ schedule }}
-                                    </option>
-                                    {% endfor %}
-                                </select>
-                            </div>
+                            <select class="form-control d-none schedule-select">
+                                {% for schedule in all_schedules %}
+                                <option value="{{ schedule }}" {% if schedule == group.schedule %}selected{% endif %}>
+                                    {{ schedule }}
+                                </option>
+                                {% endfor %}
+                            </select>
                         </td>
                         <td>
                             <span>{{ group.students | join(', ') }}</span>
-                            <div class="form-control d-none">
-                                <select multiple class="form-control student-select">
-                                    {% for student in all_students %}
-                                    <option value="{{ student.id }}" {% if student.id in group.student_ids %}selected{% endif %}>
-                                        {{ student.first_name }} {{ student.last_name }}
-                                    </option>
-                                    {% endfor %}
-                                </select>
-                            </div>
+                            <select multiple class="form-control d-none student-select">
+                                {% for student in all_students %}
+                                <option value="{{ student.id }}" {% if student.id in group.student_ids %}selected{% endif %}>
+                                    {{ student.first_name }} {{ student.last_name }}
+                                </option>
+                                {% endfor %}
+                            </select>
                         </td>
                         <td>
                             <button class="btn btn-warning btn-sm edit-group">Edytuj</button>
@@ -439,49 +141,41 @@
                     {% endfor %}
                 </tbody>
             </table>
-            <div>
-                <button class="btn btn-primary" id="add-group">Utwórz nową grupę</button>
-            </div>
         </div>
     </div>
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            // Edycja istniejących grup
+            // Obsługa przycisku "Edytuj"
             document.querySelectorAll('.edit-group').forEach(button => {
                 button.addEventListener('click', function () {
                     const row = this.closest('tr');
                     const spans = row.querySelectorAll('span');
                     const inputs = row.querySelectorAll('input, select');
 
+                    // Ukrywamy tekst (span), pokazujemy pola edycyjne (input/select)
                     spans.forEach(span => span.classList.add('d-none'));
-                    inputs.forEach(input => input.closest('div').classList.remove('d-none'));
+                    inputs.forEach(input => input.classList.remove('d-none'));
 
+                    // Zmiana przycisku "Edytuj" na "Zapisz"
                     this.textContent = 'Zapisz';
                     this.classList.remove('btn-warning');
                     this.classList.add('btn-success');
                     this.classList.remove('edit-group');
                     this.classList.add('save-edit-group');
 
+                    // Obsługa zapisywania danych
                     this.addEventListener('click', function saveGroupEdit() {
-                        const studentSelect = row.querySelector('.student-select');
-                        const teacherSelect = row.querySelector('.teacher-select');
-                        const scheduleSelect = row.querySelector('.schedule-select');
-                        const languageSelect = row.querySelector('.language-select');
-                        const selectedStudents = Array.from(studentSelect.selectedOptions).map(option => option.value);
-                        const selectedTeacher = teacherSelect.value;
-                        const selectedSchedule = scheduleSelect.value;
-                        const selectedLanguage = languageSelect.value;
-
                         const groupData = {
                             id: row.dataset.id,
                             group_id: row.querySelector('input').value.trim(),
-                            language: selectedLanguage,
-                            teacher: selectedTeacher,
-                            schedule: selectedSchedule,
-                            students: selectedStudents
+                            language: row.querySelector('.language-select').value,
+                            teacher: row.querySelector('.teacher-select').value,
+                            schedule: row.querySelector('.schedule-select').value,
+                            students: Array.from(row.querySelector('.student-select').selectedOptions).map(option => option.value)
                         };
 
+                        // Wysłanie danych na serwer
                         fetch('/edit_group', {
                             method: 'POST',
                             headers: { 'Content-Type': 'application/json' },
@@ -495,88 +189,23 @@
                             }
                         });
 
-                        this.removeEventListener('click', saveGroupEdit);
+                        // Przywracanie widoku tekstowego
+                        inputs.forEach(input => input.classList.add('d-none'));
+                        spans.forEach((span, index) => {
+                            const value = Object.values(groupData)[index + 1];
+                            span.textContent = Array.isArray(value) ? value.join(', ') : value;
+                            span.classList.remove('d-none');
+                        });
+
+                        // Przywrócenie przycisku "Edytuj"
+                        this.textContent = 'Edytuj';
+                        this.classList.remove('btn-success');
+                        this.classList.add('btn-warning');
+                        this.classList.remove('save-edit-group');
+                        this.classList.add('edit-group');
+
+                        this.removeEventListener('click', saveGroupEdit); // Usuń zdarzenie
                     }, { once: true });
-                });
-            });
-
-            // Dodawanie nowej grupy
-            document.getElementById('add-group').addEventListener('click', function () {
-                const table = document.getElementById('groups-table').getElementsByTagName('tbody')[0];
-                const newRow = table.insertRow();
-
-                newRow.innerHTML = `
-                    <td><input type="text" class="form-control" placeholder="Id grupy"></td>
-                    <td>
-                        <div class="form-control">
-                            <select class="form-control language-select">
-                                {% for language in all_languages %}
-                                <option value="{{ language }}">{{ language }}</option>
-                                {% endfor %}
-                            </select>
-                        </div>
-                    </td>
-                    <td>
-                        <div class="form-control">
-                            <select class="form-control teacher-select">
-                                {% for teacher in all_teachers %}
-                                <option value="{{ teacher.id }}">{{ teacher.first_name }} {{ teacher.last_name }}</option>
-                                {% endfor %}
-                            </select>
-                        </div>
-                    </td>
-                    <td>
-                        <div class="form-control">
-                            <select class="form-control schedule-select">
-                                {% for schedule in all_schedules %}
-                                <option value="{{ schedule }}">{{ schedule }}</option>
-                                {% endfor %}
-                            </select>
-                        </div>
-                    </td>
-                    <td>
-                        <div class="form-control">
-                            <select multiple class="form-control student-select">
-                                {% for student in all_students %}
-                                <option value="{{ student.id }}">{{ student.first_name }} {{ student.last_name }}</option>
-                                {% endfor %}
-                            </select>
-                        </div>
-                    </td>
-                    <td><button class="btn btn-success btn-sm save-group">Zapisz</button></td>
-                `;
-
-                newRow.querySelector('.save-group').addEventListener('click', function () {
-                    const inputs = newRow.querySelectorAll('input');
-                    const studentSelect = newRow.querySelector('.student-select');
-                    const teacherSelect = newRow.querySelector('.teacher-select');
-                    const scheduleSelect = newRow.querySelector('.schedule-select');
-                    const languageSelect = newRow.querySelector('.language-select');
-                    const selectedStudents = Array.from(studentSelect.selectedOptions).map(option => option.value);
-                    const selectedTeacher = teacherSelect.value;
-                    const selectedSchedule = scheduleSelect.value;
-                    const selectedLanguage = languageSelect.value;
-
-                    const groupData = {
-                        group_id: inputs[0].value.trim(),
-                        language: selectedLanguage,
-                        teacher: selectedTeacher,
-                        schedule: selectedSchedule,
-                        students: selectedStudents
-                    };
-
-                    fetch('/add_group', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify(groupData)
-                    }).then(response => {
-                        if (response.ok) {
-                            alert('Grupa dodana!');
-                            location.reload();
-                        } else {
-                            alert('Błąd przy dodawaniu.');
-                        }
-                    });
                 });
             });
         });
