@@ -280,8 +280,21 @@ class GroupApi:
                 "Śr. 8:00", "Śr. 10:00", "Śr. 12:00", "Śr. 14:00", "Śr. 16:00",
                 "Czw. 8:00", "Czw. 10:00", "Czw. 12:00", "Czw. 14:00", "Czw. 16:00",
                 "Pt. 8:00", "Pt. 10:00", "Pt. 12:00", "Pt. 14:00", "Pt. 16:00"
-            ]
-
+            ],
+            "all_students": [
+                {
+                    "id": student.get("id"),
+                    "first_name": student.get("first_name"),
+                    "last_name": student.get("last_name")
+                }
+                for student in all_students
+            ],
+            "all_teachers": [
+                {"id": 1, "first_name": "Aneta", "last_name": "Glapinska"},
+                {"id": 2, "first_name": "Ryszard", "last_name": "Małejaja"},
+                {"id": 3, "first_name": "Bartosz", "last_name": "Władziński"}
+            ],
+            "all_languages": ["Niemiecki", "Angielski", "Francuski", "Hiszpański"]
 
 
         }
