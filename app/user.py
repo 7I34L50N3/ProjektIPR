@@ -50,6 +50,10 @@ class User(db.Model):
     def get_role(self):
         return self.role
 
+    def add_group(self, group):
+        self.groups.append(group)
+        db.session.commit()
+
 class UserRepo:
     _instance = None
 
@@ -99,6 +103,7 @@ class UserRepo:
             return user
         else:
             return None
+
 
     @staticmethod
     def create_tables():

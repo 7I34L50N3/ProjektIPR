@@ -346,10 +346,9 @@ class GroupApi:
 
     def add(self):
         data = request.json
-
-        group_id = data.get('group_id')
+        #
+        name = data.get('group_id')
         language = data.get ('language')
-        teacher = data.get('teacher')
         schedule = data.get('schedule')
         student_username = data.get('students',[])
         students_ids = data.get('student_ids',[])
@@ -360,16 +359,13 @@ class GroupApi:
         if existing_group:
             return jsonify({"message": "Taka grupa już istnieje"})
 
-        students = []
-        for username in student_username:
-            student = user_repo.find_by_argument(username=username)
+        new_group = group_repo.create(group_id, language, schedule)
+        
+
+        for student_id in students_ids:
+            student = user_repo.find_by_argument(id=student_id)
             if student:
-                students.append(student)
-
-        new_group=group_repo.create(group_id,language,schedule)
-
-
-
+                student.add_group(new_group)
 
 
         db.session.add(new_group)
