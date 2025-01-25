@@ -13,7 +13,7 @@ class StudentApi:
         return cls._instance
 
     def register_routes(self, app):
-        app.add_url_rule('/home', 'student_dashboard', self.student_dashboard, methods=['GET'])
+        app.add_url_rule('/HomePage', 'student_dashboard', self.student_dashboard, methods=['GET'])
 
     def student_dashboard(self):
         user_id = session.get('user_id')

@@ -131,6 +131,28 @@ class AccountInfoApi:
 
     def register_routes(self, app):
         app.add_url_rule('/account', 'account_info', self.account_info, methods=['GET'])
+        app.add_url_rule('/home', 'home', self.home, methods=['GET'])
+
+    def home(self):
+        user_id = session.get('user_id')
+        if not user_id:
+            flash("Musisz być zalogowany, aby uzyskać dostęp do tej strony.", "error")
+            return redirect(url_for('login'))
+
+        user_repo = UserRepo()
+        user = user_repo.find_by_argument(username=user_id)
+        role = user.get_role()
+
+        if not user:
+            flash("Nie znaleziono użytkownika", "error")
+            return redirect(url_for('login'))
+
+        if role == 'admin':
+            return redirect(url_for('admin_dashboard'))
+        elif role == 'student':
+            return redirect(url_for('student_dashboard'))
+        else:
+            return redirect(url_for('login'))
 
     def account_info(self):
         user_id = session.get('user_id')
@@ -154,7 +176,7 @@ class AdminApi:
         return cls._instance
 
     def register_routes(self, app):
-        app.add_url_rule('/dashboard', 'admin_dashboard', self.admin_dashboard, methods=['GET'])
+        app.add_url_rule('/AdminDashboard', 'admin_dashboard', self.admin_dashboard, methods=['GET'])
 
     def admin_dashboard(self):
         user_id = session.get('user_id')
