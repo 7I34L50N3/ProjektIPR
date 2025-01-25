@@ -15,7 +15,7 @@ class Group(db.Model):
     name = db.Column(db.String(100), nullable=False, unique=True)
     description = db.Column(db.String(255), nullable=True)
     users = relationship('User', secondary=user_group_association, back_populates='groups', lazy='dynamic')
-
+    schedule = db.Column(db.Text, nullable=True)
     marks = relationship('Mark', back_populates='group', lazy='dynamic')
     def check_info_group(self):
         return {
@@ -72,7 +72,9 @@ class GroupRepo:
 
 
 if __name__ == '__main__':
-    if test_connection():
+    with app.app_context():
+
+
         app.run(debug=True)
 
 
