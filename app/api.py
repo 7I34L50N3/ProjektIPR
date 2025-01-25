@@ -146,11 +146,14 @@ class AdminApi:
             flash("Nie masz uprawnień do tej strony", "error")
             return redirect(url_for('login'))
 
+        students_count = db.session.query(Student).count()
+        groups_count = db.session.query(Group).count()
+
         dashboard_data = {
             'username': user_id,
-            'students': 50,
+            'students': students_count,
             'teachers': 4,
-            'groups': 5
+            'groups': groups_count
         }
         return render_template("admin_dashboard.html", **dashboard_data)
 
