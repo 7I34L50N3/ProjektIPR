@@ -6,6 +6,7 @@ from group import Group,GroupRepo
 from admin import Admin
 from globals import app, db
 from hashlib import sha256
+import json
 
 import logging
 
@@ -379,7 +380,7 @@ class GroupApi:
         #
         name = data.get('group_id')
         language = data.get ('language')
-        schedule = data.get('schedule')
+        schedule = json.dumps(data.get('schedule', []))
         students_ids = data.get('students_ids',[])
 
         group_repo = GroupRepo()
