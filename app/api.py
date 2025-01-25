@@ -281,6 +281,8 @@ class GroupApi:
         }
         logger.info(group_data)
         return jsonify({"message": "Grupa została zmodyfikowana!"}), 200
+
     def add(self):
         data = request.json
+        logger.info(data)
         return jsonify({"message": "Grupa została dodana!"}), 200
