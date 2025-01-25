@@ -71,7 +71,7 @@ class UserApi:
         user_id = user.check_info().get('id')
 
         update_data={"username":username, "passowrd": password, "name":name, "surname":surname, "role":role}
-        updated_user = user_repo.update( user_id,**update_data)
+        user_repo.update( user_id,**update_data)
 
 
         return jsonify({"message": "Zmiany zapisane pomyślnie!","user": updated_user.check_info()}), 200
