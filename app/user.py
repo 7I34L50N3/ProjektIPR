@@ -38,10 +38,13 @@ class User(db.Model):
 
     def check_info(self):
         return {
+            "id": self.id,
             "email": self.email,
             "first_name": self.name,
             "last_name": self.surname,
             "role": self.role,
+            "account": self.username,
+            "password": "*****",
             "added_date": str(self.created_at)
         }
     def get_role(self):
