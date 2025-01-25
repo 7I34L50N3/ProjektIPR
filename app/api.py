@@ -260,6 +260,10 @@ class GroupApi:
 
         group_repo = GroupRepo()
         all_groups = group_repo.find()
+        user_repo = UserRepo()
+        all_users = user_repo.find()
+        all_students = [user.check_info() for user in all_users if user.get_role() == "student"]
+
         groups_data = {
             "groups": [
                 {
@@ -269,8 +273,19 @@ class GroupApi:
                     "teacher": "Aneta Glapinska"
                 }
                 for group in all_groups
+            ],
+            "all_schedules": [
+                "Pn. 8:00", "Pn. 10:00", "Pn. 12:00", "Pn. 14:00", "Pn. 16:00",
+                "Wt. 8:00", "Wt. 10:00", "Wt. 12:00", "Wt. 14:00", "Wt. 16:00",
+                "Śr. 8:00", "Śr. 10:00", "Śr. 12:00", "Śr. 14:00", "Śr. 16:00",
+                "Czw. 8:00", "Czw. 10:00", "Czw. 12:00", "Czw. 14:00", "Czw. 16:00",
+                "Pt. 8:00", "Pt. 10:00", "Pt. 12:00", "Pt. 14:00", "Pt. 16:00"
             ]
+
+
+
         }
+
             #"groups": [Group.check_info_group() for Group in all_groups]}
 
         #     "groups": [
