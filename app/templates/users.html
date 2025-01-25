@@ -150,7 +150,8 @@
                             alert('Użytkownik został dodany!');
                             location.reload(); // Odśwież stronę
                         } else {
-                            alert('Wystąpił błąd podczas dodawania użytkownika.');
+                            alert('Użytkownik o podanym usrename już istnieje');
+                            location.reload(); // Odśwież stronę
                         }
                     });
                 });

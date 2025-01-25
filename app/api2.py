@@ -49,8 +49,11 @@ class UserApi:
         role = user_data.get('role')
         email = f"{username.lower()}@lingduo.com"
 
-
         user_repo = UserRepo()
+        existing_user = user_repo.find_by_argument(username=username)
+        if existing_user:
+            return jsonify({"message": "Użytkownik o takim username już istnieje!"}), 400
+
         user = user_repo.create(username, password, email, name, surname, role)
         db.session.add(user)
         db.session.commit()
