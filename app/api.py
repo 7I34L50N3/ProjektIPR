@@ -122,6 +122,28 @@ class ChangePasswordApi:
 
         return redirect(url_for('account_info'))
 
+class AccountInfoApi:
+    _instance = None
+    def __new__(cls, *args, **kwargs):
+        if cls._instance is None:
+            cls._instance = super(AdminApi, cls).__new__(cls, *args, **kwargs)
+        return cls._instance
+
+    def register_routes(self, app):
+        app.add_url_rule('/account', 'account_info', self.account_info, methods=['GET'])
+
+    def account_info(self):
+        user_id = session.get('user_id')
+        if not user_id:
+            flash("Musisz być zalogowany, aby uzyskać dostęp do tej strony.", "error")
+            return redirect(url_for('login'))
+
+        user_repo = UserRepo()
+        user = user_repo.find_by_argument(username=session.get('user_id'))
+        user_data = user.check_info()
+
+        return render_template("account_info.html", **user_data)
+
 
 class AdminApi:
     _instance = None
@@ -133,7 +155,6 @@ class AdminApi:
 
     def register_routes(self, app):
         app.add_url_rule('/dashboard', 'admin_dashboard', self.admin_dashboard, methods=['GET'])
-        app.add_url_rule('/account', 'account_info', self.account_info, methods=['GET'])
 
     def admin_dashboard(self):
         user_id = session.get('user_id')
@@ -158,17 +179,7 @@ class AdminApi:
         }
         return render_template("admin_dashboard.html", **dashboard_data)
 
-    def account_info(self):
-        user_id = session.get('user_id')
-        if not user_id:
-            flash("Musisz być zalogowany, aby uzyskać dostęp do tej strony.", "error")
-            return redirect(url_for('login'))
 
-        user_repo = UserRepo()
-        user = user_repo.find_by_argument(username=session.get('user_id'))
-        user_data = user.check_info()
-
-        return render_template("account_info.html", **user_data)
 
 
 class UserApi:

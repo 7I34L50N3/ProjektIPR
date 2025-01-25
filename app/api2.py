@@ -41,7 +41,10 @@ class UserApi:
 
     def add_user(self):
         user_data = request.get_json()
-        logger.info(user_data)
+        username = user_data.get('account')
+        password = user_data.get('password')
+        password = sha256(password.encode()).hexdigest()
+
         return jsonify({"message": "Użytkownik został dodany pomyślnie!"}), 200
 
     def edit_user(self):
