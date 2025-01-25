@@ -185,13 +185,10 @@ class UserApi:
         if not user_id:
             flash("Musisz być zalogowany, aby uzyskać dostęp do tej strony.", "error")
             return redirect(url_for('login'))
-
+        user_repo=UserRepo()
+        all_user = user_repo.find()
         users_data = {
-            "users": [
-                {"id": 1, "first_name": "Wanda", "last_name": "Narkiewicz", "role": "Student", "account": "wannar01", "password": "*****"},
-                {"id": 2, "first_name": "Adam", "last_name": "Kowalski", "role": "Teacher", "account": "adamkow", "password": "*****"}
-            ]
-        }
+            "users": [user.check_info() for user in all_user]}
         return render_template("users.html", **users_data)
 
     def add_user(self):
