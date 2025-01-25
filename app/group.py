@@ -59,7 +59,11 @@ class GroupRepo:
         return group
 
     def find_by_argument(self, **kwargs):
-        return Group.query.filter_by(**kwargs).one()
+        try:
+            return Group.query.filter_by(**kwargs).one()
+        except NoResultFound:
+            return None
+
 
 
     def delete(self, group_id):

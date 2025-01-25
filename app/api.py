@@ -222,7 +222,7 @@ class UserApi:
         if not user_id:
             flash("Musisz być zalogowany, aby uzyskać dostęp do tej strony.", "error")
             return redirect(url_for('login'))
-        user_repo=UserRepo()
+        user_repo = UserRepo()
         all_user = user_repo.find()
         users_data = {
             "users": [user.check_info() for user in all_user]}
@@ -230,12 +230,42 @@ class UserApi:
 
     def add_user(self):
         user_data = request.get_json()
-        logger.info(user_data)
+        username = user_data.get('account')
+        password = user_data.get('password')
+        password = sha256(password.encode()).hexdigest()
+        name = user_data.get('first_name')
+        surname = user_data.get('last_name')
+        role = user_data.get('role')
+        email = f"{username.lower()}@lingduo.com"
+
+        user_repo = UserRepo()
+        existing_user = user_repo.find_by_argument(username=username)
+        if existing_user:
+            return jsonify({"message": "Użytkownik o takim username już istnieje!"}), 400
+
+        user = user_repo.create(username, password, email, name, surname, role)
+        db.session.add(user)
+        db.session.commit()
+
         return jsonify({"message": "Użytkownik został dodany pomyślnie!"}), 200
 
     def edit_user(self):
         user_data = request.get_json()
-        logger.info(user_data)
+        username = user_data.get('account')
+        password = user_data.get('password')
+        password = sha256(password.encode()).hexdigest()
+        name = user_data.get('first_name')
+        surname = user_data.get('last_name')
+        role = user_data.get('role')
+
+        user_repo = UserRepo()
+        user = user_repo.find_by_argument(username=username)
+        user_id = user.check_info().get('id')
+
+        update_data={"username":username, "passowrd": password, "name":name, "surname":surname, "role":role}
+        user_repo.update( user_id,**update_data)
+
+
         return jsonify({"message": "Zmiany zapisane pomyślnie!"}), 200
 
 
@@ -350,8 +380,7 @@ class GroupApi:
         name = data.get('group_id')
         language = data.get ('language')
         schedule = data.get('schedule')
-        student_username = data.get('students',[])
-        students_ids = data.get('student_ids',[])
+        students_ids = data.get('students_ids',[])
 
         group_repo = GroupRepo()
         user_repo = UserRepo()
@@ -359,7 +388,7 @@ class GroupApi:
         if existing_group:
             return jsonify({"message": "Taka grupa już istnieje"})
 
-        new_group = group_repo.create(group_id, language, schedule)
+        new_group = group_repo.create(name, language, schedule)
 
 
         for student_id in students_ids:
