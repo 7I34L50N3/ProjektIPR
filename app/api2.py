@@ -2,10 +2,11 @@ import os
 from flask import Flask, render_template, request, redirect, url_for, flash, session, jsonify
 from user import UserRepo, User
 from student import Student
-from group import Group
+from group import Group, GroupRepo
 from admin import Admin
 from globals import app, db
 from hashlib import sha256
+import json
 
 import logging
 
@@ -78,3 +79,12 @@ class UserApi:
 
 
         return jsonify({"message": "Zmiany zapisane pomyślnie!"}), 200
+
+
+
+if __name__ == '__main__':
+    with app.app_context():
+        group_repo = GroupRepo()
+        group = group_repo.find_by_argument(name="eginner English")
+        users = [user.check_info().get("account") for user in group.users]
+        print(users)
