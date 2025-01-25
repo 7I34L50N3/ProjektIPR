@@ -3,7 +3,7 @@ from flask import Flask, render_template, request, redirect, url_for, flash, ses
 from user import UserRepo, User
 from student import Student
 from admin import Admin
-from globals import app
+from globals import app, db
 from hashlib import sha256
 
 import logging
