@@ -269,7 +269,7 @@ class GroupApi:
                 {
                     **group.check_info_group(),
                     "students_ids": [user.check_info().get("id") for user in group.users],
-                    "students": [user.check_info().get("account") for user in group.users],
+                    "students": [f"{user.check_info().get('first_name')} {user.check_info().get('last_name')}" for user in group.users],
                     "teacher": "Aneta Glapinska"
                 }
                 for group in all_groups
