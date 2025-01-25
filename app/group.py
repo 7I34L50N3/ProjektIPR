@@ -17,7 +17,12 @@ class Group(db.Model):
     users = relationship('User', secondary=user_group_association, back_populates='groups', lazy='dynamic')
 
     marks = relationship('Mark', back_populates='group', lazy='dynamic')
-
+    def check_info_group(self):
+        return {
+            "id": self.id,
+            "name": self.name,
+            "description": self.description
+        }
     def __repr__(self):
         return f"<Group {self.name}>"
 

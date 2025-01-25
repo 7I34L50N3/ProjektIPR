@@ -74,4 +74,4 @@ class UserApi:
         user_repo.update( user_id,**update_data)
 
 
-        return jsonify({"message": "Zmiany zapisane pomyślnie!","user": updated_user.check_info()}), 200
+        return jsonify({"message": "Zmiany zapisane pomyślnie!"}), 200

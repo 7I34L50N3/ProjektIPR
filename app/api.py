@@ -228,6 +228,7 @@ class GroupApi:
     def register_routes(self, app):
         app.add_url_rule('/groups', 'groups', self.groups, methods=['GET'])
         app.add_url_rule('/edit_group', 'edit_group', self.edit, methods=['POST'])
+        app.add_url_rule('/add_group', 'add_group', self.add_group, methods=['POST'])
 
     def groups(self):
         user_id = session.get('user_id')
@@ -275,5 +276,7 @@ class GroupApi:
             "student_ids": data.get('students')
         }
         logger.info(group_data)
-
         return jsonify({"message": "Grupa została zmodyfikowana!"}), 200
+    def add(self):
+        data = request.json
+        return jsonify({"message": "Grupa została dodana!"}), 200
