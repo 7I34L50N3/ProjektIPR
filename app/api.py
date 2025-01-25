@@ -360,7 +360,7 @@ class GroupApi:
             return jsonify({"message": "Taka grupa już istnieje"})
 
         new_group = group_repo.create(group_id, language, schedule)
-        
+
 
         for student_id in students_ids:
             student = user_repo.find_by_argument(id=student_id)
