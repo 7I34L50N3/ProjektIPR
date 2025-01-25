@@ -1,6 +1,6 @@
-from api import AppControler, LoginApi, LogoutApi, ChangePasswordApi, AdminApi
+from api import AppControler, LoginApi, LogoutApi, ChangePasswordApi, AdminApi, GroupApi
 from api2 import UserApi
-from test import GroupApi
+from test import StudentApi
 
 app_controller = AppControler()
 
@@ -10,6 +10,7 @@ app_controller.add_module(ChangePasswordApi())
 app_controller.add_module(AdminApi())
 app_controller.add_module(UserApi())
 app_controller.add_module(GroupApi())
+app_controller.add_module(StudentApi())
 
 app = app_controller.app
 
