@@ -19,8 +19,8 @@ class Group(db.Model):
     marks = relationship('Mark', back_populates='group', lazy='dynamic')
     def check_info_group(self):
         return {
-            "group_id": self.id,
-            "language": self.name,
+            "group_id": self.name,
+            "language": self.language,
             "schedule": json.loads(self.schedule)
         }
     def __repr__(self):
