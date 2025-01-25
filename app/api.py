@@ -2,6 +2,7 @@ import os
 from flask import Flask, render_template, request, redirect, url_for, flash, session, jsonify
 from user import UserRepo, User
 from student import Student
+from group import Group
 from admin import Admin
 from globals import app, db
 from hashlib import sha256
