@@ -390,6 +390,8 @@ class GroupApi:
 
         new_group = group_repo.create(name, language, schedule)
 
+        db.session.add(new_group)
+        db.session
 
         for student_id in students_ids:
             student = user_repo.find_by_argument(id=student_id)
@@ -397,7 +399,6 @@ class GroupApi:
                 student.add_group(new_group)
 
 
-        db.session.add(new_group)
-        db.session
+
         logger.info(data)
         return jsonify({"message": "Grupa została dodana!"}), 200
