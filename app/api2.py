@@ -44,6 +44,9 @@ class UserApi:
         username = user_data.get('account')
         password = user_data.get('password')
         password = sha256(password.encode()).hexdigest()
+        name = user_data.get('first_name')
+        surname = user_data.get('last_name')
+        role = user_data.get('role')
 
         return jsonify({"message": "Użytkownik został dodany pomyślnie!"}), 200
 

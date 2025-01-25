@@ -57,7 +57,7 @@ class LoginApi:
                 return render_template("login.html")
             if(user.get_role() == "student"):
                 session['user_id'] = username
-                pass
+                return redirect(url_for('student_dashboard'))
             elif(user.get_role() == "admin"):
                 session['user_id'] = username
                 return redirect(url_for('admin_dashboard'))
