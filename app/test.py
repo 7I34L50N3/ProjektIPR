@@ -21,4 +21,17 @@ class StudentApi:
             flash("Musisz być zalogowany, aby uzyskać dostęp do tej strony.", "error")
             return redirect(url_for('login'))
 
-        return render_template('student_dashboard.html')
+        schedule = [
+            {"time": "8:00 - 9:00", "subject": "Matematyka"},
+            {"time": "9:00 - 10:00", "subject": "Angielski"},
+            {"time": "10:15 - 11:15", "subject": "Biologia"},
+            {"time": "11:30 - 12:30", "subject": "Historia"},
+        ]
+
+        student_data = {
+            "user_id": user_id,
+            "schedule": schedule,
+            "user_name": "Dawid Jasper Wójcik",
+        }
+
+        return render_template('student_dashboard.html', **student_data)
