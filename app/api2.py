@@ -47,6 +47,7 @@ class UserApi:
         name = user_data.get('first_name')
         surname = user_data.get('last_name')
         role = user_data.get('role')
+        email = f"{name.lower()}.{surname.lower()}@lingduo.com"
 
         return jsonify({"message": "Użytkownik został dodany pomyślnie!"}), 200
 
