@@ -346,5 +346,33 @@ class GroupApi:
 
     def add(self):
         data = request.json
+
+        group_id = data.get('group_id')
+        language = data.get ('language')
+        teacher = data.get('teacher')
+        schedule = data.get('schedule')
+        student_username = data.get('students',[])
+        students_ids = data.get('student_ids',[])
+
+        group_repo = GroupRepo()
+        user_repo = UserRepo()
+        existing_group=group_repo.find_by_argument(name=name)
+        if existing_group:
+            return jsonify({"message": "Taka grupa już istnieje"})
+
+        students = []
+        for username in student_username:
+            student = user_repo.find_by_argument(username=username)
+            if student:
+                students.append(student)
+
+        new_group=group_repo.create(group_id,language,schedule)
+
+
+
+
+
+        db.session.add(new_group)
+        db.session
         logger.info(data)
         return jsonify({"message": "Grupa została dodana!"}), 200

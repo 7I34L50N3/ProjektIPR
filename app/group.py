@@ -39,19 +39,21 @@ class GroupRepo:
     def __init__(self):
         pass
 
-    def create(self, name, description=None):
-        new_group = Group(name=name, description=description)
+    def create(self, name, language=None,schedule=None):
+        new_group = Group(name=name,  language=language ,schedule=schedule)
         db.session.add(new_group)
         db.session.commit()
         return new_group
 
-    def update(self, group_id, name=None, description=None):
+    def update(self, group_id, name=None, language=None, schedule=None):
         group = Group.query.get(group_id)
         if group:
             if name:
                 group.name = name
-            if description:
-                group.description = description
+            if language:
+                group.language = language
+            if schedule:
+                group.schedule = schedule
             db.session.commit()
         return group
 
