@@ -72,7 +72,7 @@ class StudentApi:
 
         groups = user.get_groups()
 
-        task_and_grades = {
+        tasks_and_grades = {
             group.check_info_group().get("group_id"): [
                 {"task": mark.check_info_mark().get("description"), "grade": mark.check_info_mark().get("value")}
                 for mark in group.marks
