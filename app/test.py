@@ -12,6 +12,13 @@ class StudentApi:
             cls._instance = super(StudentApi, cls).__new__(cls, *args, **kwargs)
         return cls._instance
 
+    def student(self):
+        user_id = session.get('user_id')
+        if not user_id:
+            flash("Musisz być zalogowany, aby uzyskać dostęp do tej strony.", "error")
+            return redirect(url_for('login'))
+        return render_template('student.html')
+
     def register_routes(self, app):
         app.add_url_rule('/HomePage', 'student_dashboard', self.student_dashboard, methods=['GET'])
         app.add_url_rule('/marks', 'student_marks', self.marks, methods=['GET'])
@@ -61,6 +68,15 @@ class StudentApi:
         # Dane do wyświetlenia w szablonie
 
         groups = group.check_info_group().get('name')
+
+        task_and_grades = {
+            group.check_info_group().get("group_id"): [
+                {"task": mark.description, "grade": mark.value}
+                for mark in group.marks
+                if mark.student_id == user.id  # Filtrujemy oceny tylko dla tego studenta
+            ]
+            for group in user.groups
+        }
 
 
         groups = ["Grupa 1", "Grupa 2", "Grupa 3"]
