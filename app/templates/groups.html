@@ -213,19 +213,7 @@
                                 }
                             });
 
-                            // Przywracanie widoku tekstowego
-                            inputs.forEach(input => input.classList.add('d-none'));
-                            checkboxesGroup.forEach(group => group.classList.add('d-none'));
-                            spans.forEach((span, index) => {
-                                const key = Object.keys(groupData)[index + 1];
-                                const value = groupData[key];
-                                if (key === 'schedule' || key === 'students') {
-                                    span.textContent = value.join(', ');
-                                } else {
-                                    span.textContent = value;
-                                }
-                                span.classList.remove('d-none');
-                            });
+
 
                             // Przywrócenie przycisku "Edytuj"
                             this.textContent = 'Edytuj';
