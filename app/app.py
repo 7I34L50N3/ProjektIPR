@@ -1,4 +1,5 @@
-from api import UserApi, AppControler, LoginApi, LogoutApi, ChangePasswordApi, AdminApi, GroupApi, AccountInfoApi, StudentApi
+from api import UserApi, AppControler, LoginApi, LogoutApi, ChangePasswordApi, AdminApi, GroupApi, AccountInfoApi
+from test import StudentApi
 
 app_controller = AppControler()
 
