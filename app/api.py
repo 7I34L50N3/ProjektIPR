@@ -381,7 +381,7 @@ class GroupApi:
         name = data.get('group_id')
         language = data.get ('language')
         schedule = json.dumps(data.get('schedule', []))
-        students_ids = data.get('students_ids',[])
+        students_ids = data.get('students',[])
 
         group_repo = GroupRepo()
         user_repo = UserRepo()
@@ -392,14 +392,15 @@ class GroupApi:
         new_group = group_repo.create(name, language, schedule)
 
         db.session.add(new_group)
-        db.session
-
+        db.session.commit()
+        #db.session
         for student_id in students_ids:
+            logger.info(f"Processing student ID: {student_id}")
             student = user_repo.find_by_argument(id=student_id)
             if student:
                 student.add_group(new_group)
 
-
+        db.session.commit()
 
         logger.info(data)
         return jsonify({"message": "Grupa została dodana!"}), 200
