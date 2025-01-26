@@ -46,7 +46,6 @@ class StudentApi:
             for group in user.groups
             for day in group.check_info_group().get("schedule")
         ]
-        logger.info(schedule)
 
         student_data = {
             "user_id": user_data.get("id"),
@@ -71,6 +70,7 @@ class StudentApi:
         # Dane do wyświetlenia w szablonie
 
         groups = user.get_groups()
+        groups_text = [group.check_info_group().get("group_id") for group in groups]
 
         tasks_and_grades = {
             group.check_info_group().get("group_id"): [
@@ -80,6 +80,7 @@ class StudentApi:
             ]
             for group in groups
         }
+
 
 
         # groups = ["Grupa 1", "Grupa 2", "Grupa 3"]
@@ -103,7 +104,7 @@ class StudentApi:
 
         return render_template(
             'marks.html',
-            groups=groups,
+            groups=groups_text,
             tasks_and_grades=tasks_and_grades,
             selected_group=selected_group
         )
