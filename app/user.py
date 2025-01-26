@@ -114,18 +114,13 @@ if __name__ == "__main__":
     with app.app_context():
         # Tworzenie tabel
         # UserRepo.create_tables()
-        #
-        user_repo = UserRepo()  # Singleton
-        # Dodawanie użytkowników
+        pass
 
         # Przypisywanie użytkowników do grup
-        user1 = user_repo.find_by_argument(username="Janekthebuilder")
-        user1.change_password(db.session, "123")
+        # user1 = user_repo.find_by_argument(id=6)
+        # user1.check_info()
 
-        # group1 = GroupRepo().find_by_argument(name="Beginner English")
-        # print(user1, group1)
-        # user1.groups.append(group1)
-        db.session.commit()
+
 
         # Wyświetlenie wszystkich użytkowników i ich grup
         # users = user_repo.find()

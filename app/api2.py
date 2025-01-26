@@ -85,6 +85,10 @@ class UserApi:
 if __name__ == '__main__':
     with app.app_context():
         group_repo = GroupRepo()
-        group = group_repo.find_by_argument(name="eginner English")
-        users = [user.check_info().get("account") for user in group.users]
-        print(users)
+        user_repo = UserRepo()  # Singleton
+        group = group_repo.find_by_argument(id=6)
+        user = user_repo.find_by_argument(id=13)
+
+        # Przypisywanie użytkowników do grup
+        user.groups.append(group)
+        db.session.commit()
