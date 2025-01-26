@@ -363,7 +363,7 @@ class GroupApi:
 
     def edit(self):
         data = request.json
-
+        id = data.get('id')
         name = data.get('group_id')
         language = data.get('language')
         schedule = json.dumps(data.get('schedule', []))
@@ -372,13 +372,12 @@ class GroupApi:
         group_repo = GroupRepo()
         user_repo = UserRepo()
 
-        group = group_repo.find_by_argument(name=name)
+        group = group_repo.find_by_argument(id=id)
         if not group:
             return jsonify({"message": "Grupa nie istnieje!"}), 400
 
-        group_id = group.check_info_group().get('id')
 
-        group_repo.update(group_id,name=name,language=language, schedule=schedule)
+        group_repo.update(id,name=name,language=language, schedule=schedule)
 
         group.clear_users()
 
