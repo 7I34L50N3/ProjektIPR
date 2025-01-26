@@ -451,10 +451,12 @@ class StudentApi:
         user = user_repo.find_by_argument(username=session.get('user_id'))
         user_data = user.check_info()
 
+        group_repo = GroupRepo()
+
 
 
         schedule = [
-            {"time": group.schedule, "subject": group.language}
+            {"time": group.check_info_group("schedule"), "subject":group.check_info_group("language")}
             for group in user.groups
         ]
 
