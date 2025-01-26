@@ -22,6 +22,12 @@ class StudentApi:
             flash("Musisz być zalogowany, aby uzyskać dostęp do tej strony.", "error")
             return redirect(url_for('login'))
 
+        user_repo = UserRepo()
+        user = user_repo.find_by_argument(username=session.get('user_id'))
+        if user.get_role() != "student":
+            flash("Nie masz uprawnień do tej strony", "error")
+            return redirect(url_for('login'))
+
         schedule = [
             {"time": "8:00 - 9:00", "subject": "Matematyka"},
             {"time": "9:00 - 10:00", "subject": "Angielski"},
@@ -41,6 +47,12 @@ class StudentApi:
         user_id = session.get('user_id')
         if not user_id:
             flash("Musisz być zalogowany, aby uzyskać dostęp do tej strony.", "error")
+            return redirect(url_for('login'))
+
+        user_repo = UserRepo()
+        user = user_repo.find_by_argument(username=session.get('user_id'))
+        if user.get_role() != "student":
+            flash("Nie masz uprawnień do tej strony", "error")
             return redirect(url_for('login'))
 
         # Dane do wyświetlenia w szablonie
