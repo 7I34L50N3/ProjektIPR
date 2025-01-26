@@ -28,17 +28,18 @@ class StudentApi:
             flash("Nie masz uprawnień do tej strony", "error")
             return redirect(url_for('login'))
 
+        user = user_repo.find_by_argument(username=session.get('user_id'))
+        user_data = user.check_info()
+
         schedule = [
-            {"time": "8:00 - 9:00", "subject": "Matematyka"},
-            {"time": "9:00 - 10:00", "subject": "Angielski"},
-            {"time": "10:15 - 11:15", "subject": "Biologia"},
-            {"time": "11:30 - 12:30", "subject": "Historia"},
+            {"time": group.check_info_group().get("schedule"), "subject": group.check_info_group().get("language")}
+            for group in user.groups
         ]
 
         student_data = {
-            "user_id": user_id,
+            "user_id": user_data.get("id"),
             "schedule": schedule,
-            "user_name": "Dawid Jasper Wójcik",
+            "user_name": user_data.get("account")
         }
 
         return render_template('student_dashboard.html', **student_data)

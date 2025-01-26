@@ -466,17 +466,15 @@ class StudentApi:
 
         group_repo = GroupRepo()
 
-
-
         schedule = [
-            {"time": group.check_info_group("schedule"), "subject":group.check_info_group("language")}
+            {"time": group.check_info_group().get("schedule"), "subject":group.check_info_group().get("language")}
             for group in user.groups
         ]
 
         student_data = {
-            "user_id": user_data.get["id"],
+            "user_id": user_data.get("id"),
             "schedule": schedule,
-            "user_name": user_data.get["account"]
+            "user_name": user_data.get("account")
         }
 
         return render_template('student_dashboard.html', **student_data )
