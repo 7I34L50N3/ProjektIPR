@@ -93,7 +93,11 @@ class StudentApi:
         # }
 
         # Domyślna grupa, np. Grupa 1
-        selected_group = groups[0].check_info_group().get("group_id") if groups else None
+
+        if groups.count() > 0:
+            selected_group = groups[0].check_info_group().get("group_id")
+        else:
+            selected_group = None
 
         return render_template(
             'marks.html',
