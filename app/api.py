@@ -252,6 +252,7 @@ class UserApi:
 
     def edit_user(self):
         user_data = request.get_json()
+        user_id = user_data.get('id')
         username = user_data.get('account')
         password = user_data.get('password')
         password = sha256(password.encode()).hexdigest()
@@ -260,11 +261,9 @@ class UserApi:
         role = user_data.get('role')
 
         user_repo = UserRepo()
-        user = user_repo.find_by_argument(username=username)
-        user_id = user.check_info().get('id')
 
         update_data={"username":username, "passowrd": password, "name":name, "surname":surname, "role":role}
-        user_repo.update( user_id,**update_data)
+        user_repo.update(user_id,**update_data)
 
 
         return jsonify({"message": "Zmiany zapisane pomyślnie!"}), 200
@@ -287,6 +286,12 @@ class GroupApi:
         user_id = session.get('user_id')
         if not user_id:
             flash("Musisz być zalogowany, aby uzyskać dostęp do tej strony.", "error")
+            return redirect(url_for('login'))
+
+        user_repo = UserRepo()
+        user = user_repo.find_by_argument(username=session.get('user_id'))
+        if user.get_role() != "admin":
+            flash("Nie masz uprawnień do tej strony", "error")
             return redirect(url_for('login'))
 
         group_repo = GroupRepo()
@@ -364,7 +369,7 @@ class GroupApi:
 
     def edit(self):
         data = request.json
-
+        id = data.get('id')
         name = data.get('group_id')
         language = data.get('language')
         schedule = json.dumps(data.get('schedule', []))
@@ -373,13 +378,12 @@ class GroupApi:
         group_repo = GroupRepo()
         user_repo = UserRepo()
 
-        group = group_repo.find_by_argument(name=name)
+        group = group_repo.find_by_argument(id=id)
         if not group:
             return jsonify({"message": "Grupa nie istnieje!"}), 400
 
-        group_id = group.check_info_group().get('id')
 
-        group_repo.update(group_id,name=name,language=language, schedule=schedule)
+        group_repo.update(id,name=name,language=language, schedule=schedule)
 
         group.clear_users()
 
@@ -430,3 +434,73 @@ class GroupApi:
 
         logger.info(data)
         return jsonify({"message": "Grupa została dodana!"}), 200
+
+class StudentApi:
+    _instance = None
+
+    def __new__(cls, *args, **kwargs):
+        if cls._instance is None:
+            cls._instance = super(StudentApi, cls).__new__(cls, *args, **kwargs)
+        return cls._instance
+
+    def register_routes(self, app):
+        app.add_url_rule('/HomePage', 'student_dashboard', self.student_dashboard, methods=['GET'])
+        app.add_url_rule('/marks', 'student_marks', self.marks, methods=['GET'])
+
+    def student_dashboard(self):
+        user_id = session.get('user_id')
+        if not user_id:
+            flash("Musisz być zalogowany, aby uzyskać dostęp do tej strony.", "error")
+            return redirect(url_for('login'))
+
+        user_repo = UserRepo()
+        user = user_repo.find_by_argument(username=session.get('user_id'))
+        user_data = user.check_info()
+
+
+
+        schedule = [
+            {"time": group.schedule, "subject": group.language}
+            for group in user.groups
+        ]
+
+        student_data = {
+            "user_id": user_data.get["id"],
+            "schedule": schedule,
+            "user_name": user_data.get["account"]
+        }
+
+        return render_template('student_dashboard.html', **student_data )
+
+    def marks(self):
+        user_id = session.get('user_id')
+        if not user_id:
+            flash("Musisz być zalogowany, aby uzyskać dostęp do tej strony.", "error")
+            return redirect(url_for('login'))
+
+        # Dane do wyświetlenia w szablonie
+        groups = ["Grupa 1", "Grupa 2", "Grupa 3"]
+        tasks_and_grades = {
+            "Grupa 1": [
+                {"task": "Zadanie 1", "grade": "5"},
+                {"task": "Zadanie 2", "grade": "4"},
+            ],
+            "Grupa 2": [
+                {"task": "Zadanie 1", "grade": "3"},
+                {"task": "Zadanie 2", "grade": "5"},
+            ],
+            "Grupa 3": [
+                {"task": "Zadanie 1", "grade": "4"},
+                {"task": "Zadanie 2", "grade": "4"},
+            ],
+        }
+
+        # Domyślna grupa, np. Grupa 1
+        selected_group = "Grupa 1"
+
+        return render_template(
+            'marks.html',
+            groups=groups,
+            tasks_and_grades=tasks_and_grades,
+            selected_group=selected_group
+        )
