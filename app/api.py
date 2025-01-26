@@ -424,7 +424,7 @@ class GroupApi:
         user_repo = UserRepo()
         existing_group=group_repo.find_by_argument(name=name)
         if existing_group:
-            return jsonify({"message": "Taka grupa już istnieje"})
+            return jsonify({"message": "Taka grupa już istnieje"}), 400
 
         new_group = group_repo.create(name, language, schedule)
 
