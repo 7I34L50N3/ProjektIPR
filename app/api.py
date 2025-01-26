@@ -365,14 +365,40 @@ class GroupApi:
     def edit(self):
         data = request.json
 
-        group_data = {
-            "group_id": data.get('group_id'),
-            "language": data.get('language'),
-            "teacher": data.get('teacher'),
-            "schedule": data.get('schedule'),
-            "student_ids": data.get('students')
-        }
-        logger.info(group_data)
+        name = data.get('group_id')
+        language = data.get('language')
+        schedule = json.dumps(data.get('schedule', []))
+        students_ids = data.get('students', [])
+
+        group_repo = GroupRepo()
+        user_repo = UserRepo()
+
+        group = group_repo.find_by_argument(name=name)
+        if not group:
+            return jsonify({"message": "Grupa nie istnieje!"}), 400
+
+        group_id = group.check_info_group().get('id')
+
+        group_repo.update(group_id,name=name,language=language, schedule=schedule)
+
+        group.clear_users()
+
+        for student_id in students_ids:
+            student = user_repo.find_by_argument(id=student_id)
+            if student:
+                student.add_group(group)
+            else:
+                logger.warning(f"Student ID {student_id} not found.")
+
+        db.session.commit()
+
+        # group_data = {
+        #     "group_id": data.get('group_id'),
+        #     "language": data.get('language'),
+        #     "teacher": data.get('teacher'),
+        #     "schedule": data.get('schedule'),
+        #     "student_ids": data.get('students')
+        # }
         return jsonify({"message": "Grupa została zmodyfikowana!"}), 200
 
     def add(self):

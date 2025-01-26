@@ -24,6 +24,12 @@ class Group(db.Model):
             "language": self.language,
             "schedule": json.loads(self.schedule)
         }
+    def get_group_id(self):
+        return self.id
+
+    def clear_users(self):
+        self.users = []
+        db.session.commit()
     def __repr__(self):
         return f"<Group {self.name}>"
 
