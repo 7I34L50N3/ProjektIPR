@@ -11,6 +11,9 @@
             margin: 0;
             background-color: #f8f9fa;
             font-family: Arial, sans-serif;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
         }
         .navbar {
             background-color: #ffffff;
@@ -41,13 +44,28 @@
             text-decoration: none;
         }
         .main-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex: 1;
+            text-align: center;
             padding: 20px;
         }
-        .table-container {
+        .message-box {
             background-color: #ffffff;
             border: 1px solid #ddd;
             border-radius: 8px;
-            padding: 15px;
+            padding: 30px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .message-box h1 {
+            font-size: 24px;
+            margin-bottom: 15px;
+        }
+        .message-box p {
+            font-size: 18px;
+            margin-bottom: 0;
+            color: #6c757d;
         }
     </style>
 </head>
@@ -62,49 +80,10 @@
     </div>
 
     <div class="main-container">
-        <div class="mb-3">
-            <label for="groupDropdown" class="form-label">Wybór grupy</label>
-            <select id="groupDropdown" class="form-select" onchange="updateTable(this.value)">
-                {% for group in groups %}
-                <option value="{{ group }}" {% if group == selected_group %}selected{% endif %}>{{ group }}</option>
-                {% endfor %}
-            </select>
-        </div>
-
-        <div class="table-container">
-            <table class="table table-striped">
-                <thead>
-                    <tr>
-                        <th>Zadanie</th>
-                        <th>Ocena</th>
-                    </tr>
-                </thead>
-                <tbody id="tasksTableBody">
-                    {% for task in tasks_and_grades[selected_group] %}
-                    <tr>
-                        <td>{{ task.task }}</td>
-                        <td>{{ task.grade }}</td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+        <div class="message-box">
+            <h1>Strona w budowie!</h1>
+            <p>Pracujemy nad tym, aby strona była dostępna wkrótce. Prosimy o cierpliwość!</p>
         </div>
     </div>
-
-    <script>
-        const tasksAndGrades = {{ tasks_and_grades|tojson }};
-        const tasksTableBody = document.getElementById('tasksTableBody');
-
-        function updateTable(selectedGroup) {
-            tasksTableBody.innerHTML = '';
-            tasksAndGrades[selectedGroup].forEach(task => {
-                const row = `<tr>
-                    <td>${task.task}</td>
-                    <td>${task.grade}</td>
-                </tr>`;
-                tasksTableBody.innerHTML += row;
-            });
-        }
-    </script>
 </body>
 </html>
