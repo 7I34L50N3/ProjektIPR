@@ -8,11 +8,6 @@ from globals import app, db
 from hashlib import sha256
 import json
 
-import logging
-
-logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger(__name__)
-
 class GroupApi:
     _instance = None
 
@@ -104,8 +99,6 @@ class GroupApi:
             student = user_repo.find_by_argument(id=student_id)
             if student:
                 student.add_group(group)
-            else:
-                logger.warning(f"Student ID {student_id} not found.")
 
         db.session.commit()
 
@@ -131,12 +124,10 @@ class GroupApi:
         db.session.commit()
         #db.session
         for student_id in students_ids:
-            logger.info(f"Processing student ID: {student_id}")
             student = user_repo.find_by_argument(id=student_id)
             if student:
                 student.add_group(new_group)
 
         db.session.commit()
 
-        logger.info(data)
         return jsonify({"message": "Grupa została dodana!"}), 200

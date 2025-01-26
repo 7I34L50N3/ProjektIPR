@@ -1,6 +1,7 @@
 from user import User,UserRepo
 from group import GroupRepo
 from globals import db,app
+
 class Admin(User):
     __mapper_args__ = {
         'polymorphic_identity': 'admin',  # Wartość dla klasy Admin
@@ -65,16 +66,3 @@ class Admin(User):
                 print(f"- {user.username} ({user.role}): {user.email}")
         else:
             print("Brak użytkowników w systemie.")
-
-if __name__ == "__main__":
-    with app.app_context():
-        # Przypisywanie użytkowników do grup
-        user_repo = UserRepo()
-        currentUser = user_repo.login("ke.smith", "123")
-        if isinstance(currentUser, Admin):
-            print("Zalogowano jako administrator.")
-        print(currentUser.check_info())
-
-        currentUser.check_groups()
-        currentUser.add_group(name="chinski",description="advnace")
-        db.session.commit()

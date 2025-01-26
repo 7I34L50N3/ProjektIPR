@@ -33,8 +33,6 @@ class User(db.Model):
         'polymorphic_on': role,
         'with_polymorphic': '*'
     }
-    def logout(self):
-        print(f"User {self.username} logged out.")
 
     def change_password(self, new_password):
         new_password = sha256(new_password.encode()).hexdigest()
@@ -113,26 +111,3 @@ class UserRepo:
             return user
         else:
             return None
-
-
-    @staticmethod
-    def create_tables():
-        db.create_all()
-        print("Tables created successfully.")
-
-if __name__ == "__main__":
-    with app.app_context():
-        # Tworzenie tabel
-        # UserRepo.create_tables()
-        pass
-
-        # Przypisywanie użytkowników do grup
-        # user1 = user_repo.find_by_argument(id=6)
-        # user1.check_info()
-
-
-
-        # Wyświetlenie wszystkich użytkowników i ich grup
-        # users = user_repo.find()
-        # for user in users:
-        #     print(user.check_info())
