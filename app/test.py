@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, redirect, url_for, flash, session, jsonify
-from user import UserRepo, user
+from user import UserRepo, User
 import logging
 
 logging.basicConfig(level=logging.INFO)
