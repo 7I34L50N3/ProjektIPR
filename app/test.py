@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, redirect, url_for, flash, session, jsonify
-
+from user import UserRepo, User
 import logging
 
 logging.basicConfig(level=logging.INFO)
@@ -22,6 +22,12 @@ class StudentApi:
             flash("Musisz być zalogowany, aby uzyskać dostęp do tej strony.", "error")
             return redirect(url_for('login'))
 
+        user_repo = UserRepo()
+        user = user_repo.find_by_argument(username=session.get('user_id'))
+        if user.get_role() != "student":
+            flash("Nie masz uprawnień do tej strony", "error")
+            return redirect(url_for('login'))
+
         schedule = [
             {"time": "8:00 - 9:00", "subject": "Matematyka"},
             {"time": "9:00 - 10:00", "subject": "Angielski"},
@@ -41,6 +47,12 @@ class StudentApi:
         user_id = session.get('user_id')
         if not user_id:
             flash("Musisz być zalogowany, aby uzyskać dostęp do tej strony.", "error")
+            return redirect(url_for('login'))
+
+        user_repo = UserRepo()
+        user = user_repo.find_by_argument(username=session.get('user_id'))
+        if user.get_role() != "student":
+            flash("Nie masz uprawnień do tej strony", "error")
             return redirect(url_for('login'))
 
         # Dane do wyświetlenia w szablonie
@@ -69,5 +81,3 @@ class StudentApi:
             tasks_and_grades=tasks_and_grades,
             selected_group=selected_group
         )
-
-    # asdgsdhxfh
