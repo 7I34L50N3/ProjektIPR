@@ -16,9 +16,7 @@ class Mark(db.Model):
     def check_info_mark(self):
         return {
             "value": self.value,
-            "descriptiomn": self.name,
-            "language": self.language,
-            "schedule": json.loads(self.schedule)
+            "description": self.description
         }
 
     def __repr__(self):
