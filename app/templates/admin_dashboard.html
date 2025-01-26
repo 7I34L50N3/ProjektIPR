@@ -126,7 +126,6 @@
     </style>
 </head>
 <body>
-    <!-- Navbar -->
     <div class="navbar">
         <div>
             <a href="{{ url_for('admin_dashboard') }}">Home</a>
@@ -136,20 +135,16 @@
         <a href="{{ url_for('logout') }}" class="btn btn-danger">Wyloguj</a>
     </div>
 
-    <!-- Main Content -->
     <div class="main-container">
-        <!-- Sidebar -->
         <div class="sidebar">
             <div class="profile">
-                <img src="https://via.placeholder.com/100" alt="Profile">
+                <img src="{{ url_for('static', filename='images/avatar.png') }}" alt="Profile">
                 <h3>{{ username }}</h3>
                 <button onclick="window.location.href='{{ url_for('account_info') }}'">Informacje o koncie</button>
             </div>
         </div>
 
-        <!-- Content -->
         <div class="content">
-            <!-- Calendar Section -->
             <div class="calendar-section">
                 <div class="calendar-header">Ładowanie...</div>
                 <div class="calendar-grid"></div>
@@ -208,7 +203,6 @@
                 });
             </script>
 
-            <!-- Table Section -->
             <div class="table-section">
                 <h5>Tabela</h5>
                 <table class="table">
