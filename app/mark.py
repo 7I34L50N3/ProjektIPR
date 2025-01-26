@@ -13,5 +13,13 @@ class Mark(db.Model):
     student = db.relationship('Student', back_populates='marks')
     group = db.relationship('Group', back_populates='marks')
 
+    def check_info_mark(self):
+        return {
+            "value": self.value,
+            "descriptiomn": self.name,
+            "language": self.language,
+            "schedule": json.loads(self.schedule)
+        }
+
     def __repr__(self):
         return f"<Mark(value={self.value}, description='{self.description}')>"

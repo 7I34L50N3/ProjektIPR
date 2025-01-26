@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for, flash, session, jsonify
 from user import UserRepo, User
+from group import GroupRepo, Group
 import logging
 import json
 logging.basicConfig(level=logging.INFO)
@@ -74,7 +75,7 @@ class StudentApi:
             group.check_info_group().get("group_id"): [
                 {"task": mark.description, "grade": mark.value}
                 for mark in group.marks
-                if mark.student_id == user.id  # Filtrujemy oceny tylko dla tego studenta
+                if mark.student_id == user.id  
             ]
             for group in user.groups
         }
