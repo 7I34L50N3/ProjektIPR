@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for, flash, session, jsonify
 from user import UserRepo, User
 import logging
-
+import json
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
@@ -57,6 +57,9 @@ class StudentApi:
             return redirect(url_for('login'))
 
         # Dane do wyświetlenia w szablonie
+        #groups = group.check_info_group().get("name")
+
+
         groups = ["Grupa 1", "Grupa 2", "Grupa 3"]
         tasks_and_grades = {
             "Grupa 1": [
