@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>LingDuo</title>
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/favicon.png') }}">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body {
@@ -146,7 +147,8 @@
                                 <div class="form-check">
                                     <input class="form-check-input student-checkbox" type="checkbox" id="student_{{ student.id }}" value="{{ student.id }}" {% if student.id in group.student_ids %}checked{% endif %}>
                                     <label class="form-check-label" for="student_{{ student.id }}">
-                                        {{ student.first_name }} {{ student.last_name }}
+<!--                                        {{ student.first_name }} {{ student.last_name }}-->
+                                        {{ student.first_name }} {{ student.last_name }} (ID: {{ student.id }})
                                     </label>
                                 </div>
                                 {% endfor %}
@@ -325,4 +327,3 @@
     </script>
 </body>
 </html>
-
