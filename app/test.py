@@ -22,6 +22,7 @@ class StudentApi:
     def register_routes(self, app):
         app.add_url_rule('/HomePage', 'student_dashboard', self.student_dashboard, methods=['GET'])
         app.add_url_rule('/marks', 'student_marks', self.marks, methods=['GET'])
+        app.add_url_rule('/student', 'student', self.marks, methods=['GET'])
 
     def student_dashboard(self):
         user_id = session.get('user_id')

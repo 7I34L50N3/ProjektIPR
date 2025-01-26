@@ -122,15 +122,13 @@
     <div class="navbar">
         <div>
             <a href="{{ url_for('student_dashboard') }}">Home</a>
-            <a href="#">Uczeń</a>
-<!--            <a href="#">Oceny</a>-->
+            <a href="{{ url_for('student') }}">Uczeń</a>
             <a href="{{ url_for('student_marks') }}">Oceny</a>
         </div>
         <a href="{{ url_for('logout') }}" class="btn btn-danger">Wyloguj</a>
     </div>
 
     <div class="main-container">
-        <!-- Sidebar -->
         <div class="sidebar">
             <div class="profile">
                 <img src="https://via.placeholder.com/100" alt="Profile">
@@ -139,9 +137,7 @@
             </div>
         </div>
 
-        <!-- Content -->
         <div class="content">
-            <!-- Calendar Section -->
             <div class="calendar-section">
                 <div class="calendar-header">Ładowanie...</div>
                 <div class="calendar-grid"></div>
@@ -200,14 +196,24 @@
                 });
             </script>
 
-            <!-- Schedule Section -->
             <div class="schedule">
                 <h5>Plan zajęć</h5>
-                <ul>
-                    {% for item in schedule %}
-                    <li>{{ item.time }}: {{ item.subject }}</li>
-                    {% endfor %}
-                </ul>
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Godzina</th>
+                            <th>Przedmiot</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in schedule %}
+                        <tr>
+                            <td>{{ item.time }}</td>
+                            <td>{{ item.subject }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
