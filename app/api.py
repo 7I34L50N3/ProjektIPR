@@ -252,6 +252,7 @@ class UserApi:
 
     def edit_user(self):
         user_data = request.get_json()
+        user_id = user_data.get('id')
         username = user_data.get('account')
         password = user_data.get('password')
         password = sha256(password.encode()).hexdigest()
@@ -260,11 +261,9 @@ class UserApi:
         role = user_data.get('role')
 
         user_repo = UserRepo()
-        user = user_repo.find_by_argument(username=username)
-        user_id = user.check_info().get('id')
 
         update_data={"username":username, "passowrd": password, "name":name, "surname":surname, "role":role}
-        user_repo.update( user_id,**update_data)
+        user_repo.update(user_id,**update_data)
 
 
         return jsonify({"message": "Zmiany zapisane pomyślnie!"}), 200
