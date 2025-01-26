@@ -8,6 +8,12 @@ from globals import app, db, user_group_association
 from hashlib import sha256
 from datetime import datetime
 
+import logging
+
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+
+
 
 class User(db.Model):
     __tablename__ = 'users'
@@ -87,6 +93,7 @@ class UserRepo:
             return None
         for key, value in kwargs.items():
             if key == 'password':
+                logger.info(f"Password changed for user {user.username}., {value}")
                 value = sha256(value.encode()).hexdigest()
             setattr(user, key, value)
         db.session.commit()

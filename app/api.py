@@ -240,7 +240,6 @@ class UserApi:
         user_data = request.get_json()
         username = user_data.get('account')
         password = user_data.get('password')
-        password = sha256(password.encode()).hexdigest()
         name = user_data.get('first_name')
         surname = user_data.get('last_name')
         role = user_data.get('role')
@@ -262,14 +261,13 @@ class UserApi:
         user_id = user_data.get('id')
         username = user_data.get('account')
         password = user_data.get('password')
-        password = sha256(password.encode()).hexdigest()
         name = user_data.get('first_name')
         surname = user_data.get('last_name')
         role = user_data.get('role')
 
         user_repo = UserRepo()
 
-        update_data={"username":username, "passowrd": password, "name":name, "surname":surname, "role":role}
+        update_data={"username":username, "password": password, "name":name, "surname":surname, "role":role}
         user_repo.update(user_id,**update_data)
 
 
