@@ -399,7 +399,6 @@ class GroupApi:
         #     "schedule": data.get('schedule'),
         #     "student_ids": data.get('students')
         # }
-        logger.info(group_data)
         return jsonify({"message": "Grupa została zmodyfikowana!"}), 200
 
     def add(self):
