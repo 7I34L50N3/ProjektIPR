@@ -69,5 +69,3 @@ class StudentApi:
             tasks_and_grades=tasks_and_grades,
             selected_group=selected_group
         )
-
-    # asdgsdhxfh
