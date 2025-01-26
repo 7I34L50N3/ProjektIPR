@@ -69,7 +69,7 @@ class StudentApi:
 
         # Dane do wyświetlenia w szablonie
 
-        groups = group.check_info_group().get('name')
+        groups = user.get_groups()
 
         task_and_grades = {
             group.check_info_group().get("group_id"): [
@@ -77,7 +77,7 @@ class StudentApi:
                 for mark in group.marks
                 if mark.student_id == user.id  
             ]
-            for group in user.groups
+            for group in groups
         }
 
 
@@ -98,7 +98,7 @@ class StudentApi:
         }
 
         # Domyślna grupa, np. Grupa 1
-        selected_group = "Grupa 1"
+        selected_group = groups[0].check_info_group().get("group_id") if groups else None
 
         return render_template(
             'marks.html',

@@ -54,6 +54,9 @@ class User(db.Model):
         self.groups.append(group)
         db.session.commit()
 
+    def get_groups(self):
+        return self.groups
+
 class UserRepo:
     _instance = None
 
