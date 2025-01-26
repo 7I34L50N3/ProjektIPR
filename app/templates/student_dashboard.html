@@ -123,7 +123,8 @@
         <div>
             <a href="{{ url_for('student_dashboard') }}">Home</a>
             <a href="#">Uczeń</a>
-            <a href="#">Oceny</a>
+<!--            <a href="#">Oceny</a>-->
+            <a href="{{ url_for('student_marks') }}">Oceny</a>
         </div>
         <a href="{{ url_for('logout') }}" class="btn btn-danger">Wyloguj</a>
     </div>
@@ -204,7 +205,7 @@
                 <h5>Plan zajęć</h5>
                 <ul>
                     {% for item in schedule %}
-                    <li>{{ item.time }} - {{ item.subject }}</li>
+                    <li>{{ item.time }}: {{ item.subject }}</li>
                     {% endfor %}
                 </ul>
             </div>

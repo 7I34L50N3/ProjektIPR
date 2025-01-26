@@ -14,6 +14,7 @@ class StudentApi:
 
     def register_routes(self, app):
         app.add_url_rule('/HomePage', 'student_dashboard', self.student_dashboard, methods=['GET'])
+        app.add_url_rule('/marks', 'student_marks', self.marks, methods=['GET'])
 
     def student_dashboard(self):
         user_id = session.get('user_id')
@@ -35,3 +36,36 @@ class StudentApi:
         }
 
         return render_template('student_dashboard.html', **student_data)
+
+    def marks(self):
+        user_id = session.get('user_id')
+        if not user_id:
+            flash("Musisz być zalogowany, aby uzyskać dostęp do tej strony.", "error")
+            return redirect(url_for('login'))
+
+        # Dane do wyświetlenia w szablonie
+        groups = ["Grupa 1", "Grupa 2", "Grupa 3"]
+        tasks_and_grades = {
+            "Grupa 1": [
+                {"task": "Zadanie 1", "grade": "5"},
+                {"task": "Zadanie 2", "grade": "4"},
+            ],
+            "Grupa 2": [
+                {"task": "Zadanie 1", "grade": "3"},
+                {"task": "Zadanie 2", "grade": "5"},
+            ],
+            "Grupa 3": [
+                {"task": "Zadanie 1", "grade": "4"},
+                {"task": "Zadanie 2", "grade": "4"},
+            ],
+        }
+
+        # Domyślna grupa, np. Grupa 1
+        selected_group = "Grupa 1"
+
+        return render_template(
+            'marks.html',
+            groups=groups,
+            tasks_and_grades=tasks_and_grades,
+            selected_group=selected_group
+        )
