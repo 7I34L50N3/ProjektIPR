@@ -144,9 +144,9 @@
                             <div class="form-group d-none student-checkbox-group">
                                 {% for student in all_students %}
                                 <div class="form-check">
-                                    <input class="form-check-input student-checkbox" type="checkbox" id="student_{{ student.id }}" value="{{ student.id }}" {% if student.id in group.student_ids %}checked{% endif %}>
+                                    <input class="form-check-input student-checkbox" type="checkbox" id="student_{{ student.id }}" value="{{ student.id }}" {% if student.id in group.students_ids %}checked{% endif %}>
                                     <label class="form-check-label" for="student_{{ student.id }}">
-                                        {{ student.first_name }} {{ student.last_name }}
+                                        {{ student.first_name }} {{ student.last_name }} (ID: {{ student.id }})
                                     </label>
                                 </div>
                                 {% endfor %}
