@@ -26,11 +26,6 @@ korzystających z systemu.
   docker-compose up --build
   ```
   
-* po wyłączeniu usuwamy kontener:
-  ```bash
-  docker-compose down -v
-  ```
-  
 
 ### Po uruchomieniu, aplikacja jest wystawiona na adresie:
 http://127.0.0.1:5000/
