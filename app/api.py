@@ -460,10 +460,8 @@ class StudentApi:
 
 
         schedule = [
-            {"time": "8:00 - 9:00", "subject": "Matematyka"},
-            {"time": "9:00 - 10:00", "subject": "Angielski"},
-            {"time": "10:15 - 11:15", "subject": "Biologia"},
-            {"time": "11:30 - 12:30", "subject": "Historia"},
+            {"time": group.schedule, "subject": group.language}
+            for group in user.groups
         ]
 
         student_data = {
