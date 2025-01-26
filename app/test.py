@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for, flash, session, jsonify
 from user import UserRepo, User
 from group import GroupRepo, Group
+from mark import Mark
 import logging
 import json
 logging.basicConfig(level=logging.INFO)
@@ -73,7 +74,7 @@ class StudentApi:
 
         task_and_grades = {
             group.check_info_group().get("group_id"): [
-                {"task": mark.description, "grade": mark.value}
+                {"task": mark.check_info_mark().get("description"), "grade": mark.check_info_mark().get("value")}
                 for mark in group.marks
                 if mark.student_id == user.id  
             ]
@@ -81,21 +82,21 @@ class StudentApi:
         }
 
 
-        groups = ["Grupa 1", "Grupa 2", "Grupa 3"]
-        tasks_and_grades = {
-            "Grupa 1": [
-                {"task": "Zadanie 1", "grade": "5"},
-                {"task": "Zadanie 2", "grade": "4"},
-            ],
-            "Grupa 2": [
-                {"task": "Zadanie 1", "grade": "3"},
-                {"task": "Zadanie 2", "grade": "5"},
-            ],
-            "Grupa 3": [
-                {"task": "Zadanie 1", "grade": "4"},
-                {"task": "Zadanie 2", "grade": "4"},
-            ],
-        }
+        # groups = ["Grupa 1", "Grupa 2", "Grupa 3"]
+        # tasks_and_grades = {
+        #     "Grupa 1": [
+        #         {"task": "Zadanie 1", "grade": "5"},
+        #         {"task": "Zadanie 2", "grade": "4"},
+        #     ],
+        #     "Grupa 2": [
+        #         {"task": "Zadanie 1", "grade": "3"},
+        #         {"task": "Zadanie 2", "grade": "5"},
+        #     ],
+        #     "Grupa 3": [
+        #         {"task": "Zadanie 1", "grade": "4"},
+        #         {"task": "Zadanie 2", "grade": "4"},
+        #     ],
+        # }
 
         # Domyślna grupa, np. Grupa 1
         selected_group = groups[0].check_info_group().get("group_id") if groups else None
