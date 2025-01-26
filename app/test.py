@@ -32,9 +32,11 @@ class StudentApi:
         user_data = user.check_info()
 
         schedule = [
-            {"time": group.check_info_group().get("schedule"), "subject": group.check_info_group().get("language")}
+            {"time": day, "subject": group.check_info_group().get("language")}
             for group in user.groups
+            for day in group.check_info_group().get("schedule")
         ]
+        logger.info(schedule)
 
         student_data = {
             "user_id": user_data.get("id"),
@@ -57,7 +59,8 @@ class StudentApi:
             return redirect(url_for('login'))
 
         # Dane do wyświetlenia w szablonie
-        #groups = group.check_info_group().get("name")
+
+        groups = group.check_info_group().get('name')
 
 
         groups = ["Grupa 1", "Grupa 2", "Grupa 3"]
