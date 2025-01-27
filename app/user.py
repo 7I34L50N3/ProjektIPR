@@ -60,6 +60,12 @@ class User(db.Model):
 
     def get_groups(self):
         return self.groups
+    def update(self, **kwargs):
+        for key, value in kwargs.items():
+            if key == 'password':
+                value = sha256(value.encode()).hexdigest()
+            setattr(self, key, value)
+        db.session.commit()
 
 class UserRepo:
     _instance = None
@@ -87,13 +93,8 @@ class UserRepo:
 
     def update(self, user_id, **kwargs):
         user = db.session.query(User).get(user_id)
-        if not user:
-            return None
-        for key, value in kwargs.items():
-            if key == 'password':
-                logger.info(f"Password changed for user {user.username}., {value}")
-                value = sha256(value.encode()).hexdigest()
-            setattr(user, key, value)
+        if user:
+            user.update(**kwargs)
         db.session.commit()
         return user
 

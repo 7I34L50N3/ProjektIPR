@@ -33,6 +33,14 @@ class Group(db.Model):
     def __repr__(self):
         return f"<Group {self.name}>"
 
+    def update(self, name=None, language=None, schedule=None):
+            if name:
+                self.name = name
+            if language:
+                self.language = language
+            if schedule:
+                self.schedule = schedule
+            db.session.commit()
 
 # Repozytorium grup
 class GroupRepo:
@@ -55,13 +63,7 @@ class GroupRepo:
     def update(self, group_id, name=None, language=None, schedule=None):
         group = Group.query.get(group_id)
         if group:
-            if name:
-                group.name = name
-            if language:
-                group.language = language
-            if schedule:
-                group.schedule = schedule
-            db.session.commit()
+            group.update(name=name, language=language, schedule=schedule)
         return group
 
     def find_by_argument(self, **kwargs):
