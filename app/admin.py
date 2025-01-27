@@ -16,8 +16,8 @@ class Admin(User):
         try:
             user = self.user_repo.create(username, password, email, name, surname, role)
             return user
-        except ValueError as e:
-            print(f"Błąd: {e}")
+        except:
+            return None
 
     # Edycja istniejącego użytkownika
     def edit_user(self, user_id, **kwargs):
