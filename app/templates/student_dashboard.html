@@ -111,11 +111,21 @@
             font-weight: bold;
         }
         .schedule {
-            background-color: #ffffff;
-            border: 1px solid #ddd;
-            padding: 15px;
-            border-radius: 8px;
-        }
+        background-color: #ffffff;
+        border: 1px solid #ddd;
+        padding: 15px;
+        border-radius: 8px;
+        overflow-x: auto;
+    }
+
+    .table-container {
+        max-height: 400px;
+        overflow-y: auto;
+    }
+
+    .table {
+        min-width: 600px;
+    }
     </style>
 </head>
 <body>
@@ -198,22 +208,24 @@
 
             <div class="schedule">
                 <h5>Plan zajęć</h5>
-                <table class="table table-striped">
-                    <thead>
-                        <tr>
-                            <th>Termin</th>
-                            <th>Przedmiot</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for item in schedule %}
-                        <tr>
-                            <td>{{ item.time }}</td>
-                            <td>{{ item.subject }}</td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
+                 <div class="table-container">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Termin</th>
+                                <th>Przedmiot</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for item in schedule %}
+                            <tr>
+                                <td>{{ item.time }}</td>
+                                <td>{{ item.subject }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                 </div>
             </div>
         </div>
     </div>
