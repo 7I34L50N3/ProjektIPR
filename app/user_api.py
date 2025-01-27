@@ -46,6 +46,8 @@ class UserApi:
         name = user_data.get('first_name')
         surname = user_data.get('last_name')
         role = user_data.get('role')
+        if role != "admin" and role != "student":
+            return jsonify({"message": "Użytkownik o nieobsługiwanej roli"}), 400
         email = f"{username.lower()}@lingduo.com"
 
         user_repo = UserRepo()
@@ -67,7 +69,8 @@ class UserApi:
         name = user_data.get('first_name')
         surname = user_data.get('last_name')
         role = user_data.get('role')
-
+        if role != "admin" and role != "student":
+            return jsonify({"message": "Użytkownik o nieobsługiwanej roli"}), 400
         user_repo = UserRepo()
 
         update_data={"username":username, "password": password, "name":name, "surname":surname, "role":role}

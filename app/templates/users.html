@@ -148,12 +148,18 @@
                         body: JSON.stringify(userData)
                     }).then(response => {
                         if (response.ok) {
-                            alert('Użytkownik został dodany!');
-                            location.reload(); // Odśwież stronę
+                            return response.json();
                         } else {
-                            alert('Użytkownik o podanym usrename już istnieje');
-                            location.reload(); // Odśwież stronę
+                            return response.json().then(errorData => {
+                                throw new Error(errorData.message || 'Wystąpił błąd!');
+                            });
                         }
+                    }).then(data => {
+                        alert(data.message || 'Użytkownik został dodany!');
+                        location.reload();
+                    }).catch(error => {
+                        alert(error.message);
+                        location.reload();
                     });
                 });
             });
@@ -191,19 +197,26 @@
 
                         // Wyślij dane do backendu
                         fetch('/edit_user', {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json'
-                            },
-                            body: JSON.stringify(userData)
-                        }).then(response => {
-                            if (response.ok) {
-                                alert('Zmiany zostały zapisane!');
-                                location.reload(); // Odśwież stronę
-                            } else {
-                                alert('Wystąpił błąd podczas zapisywania zmian.');
-                            }
-                        });
+                                    method: 'POST',
+                                    headers: {
+                                        'Content-Type': 'application/json'
+                                    },
+                                    body: JSON.stringify(userData)
+                                }).then(response => {
+                                    if (response.ok) {
+                                        return response.json(); // Pobierz treść odpowiedzi jako JSON
+                                    } else {
+                                        return response.json().then(errorData => {
+                                            throw new Error(errorData.message || 'Wystąpił błąd podczas zapisywania zmian.');
+                                        });
+                                    }
+                                }).then(data => {
+                                    alert(data.message || 'Zmiany zostały zapisane!');
+                                    location.reload();
+                                }).catch(error => {
+                                    alert(error.message);
+                                    location.reload();
+                                });
 
                         this.removeEventListener('click', saveUserEdit); // Usuń zdarzenie, aby uniknąć wielokrotnego przypisywania
                     }, { once: true }); // Dodaj { once: true } dla jednorazowego wykonania
