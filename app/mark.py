@@ -15,6 +15,7 @@ class Mark(db.Model):
 
     def check_info_mark(self):
         return {
+            "student_id": self.student_id,
             "value": self.value,
             "description": self.description
         }

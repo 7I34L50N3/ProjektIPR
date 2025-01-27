@@ -41,6 +41,8 @@ class Group(db.Model):
             if schedule:
                 self.schedule = schedule
             db.session.commit()
+    def get_marks(self):
+        return self.marks
 
 # Repozytorium grup
 class GroupRepo:

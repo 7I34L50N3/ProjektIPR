@@ -74,8 +74,8 @@ class StudentApi:
         tasks_and_grades = {
             group.check_info_group().get("group_id"): [
                 {"task": mark.check_info_mark().get("description"), "grade": mark.check_info_mark().get("value")}
-                for mark in group.marks
-                if mark.student_id == user.id
+                for mark in group.get_marks()
+                if mark.check_info_mark().get("student_id") == user.check_info().get("id")
             ]
             for group in groups
         }
