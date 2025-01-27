@@ -15,7 +15,6 @@ class Admin(User):
     def add_user(self, username, password, email, name, surname, role="user"):
         try:
             user = self.user_repo.create(username, password, email, name, surname, role)
-            print(f"Użytkownik {username} został pomyślnie dodany.")
             return user
         except ValueError as e:
             print(f"Błąd: {e}")
@@ -24,45 +23,18 @@ class Admin(User):
     def edit_user(self, user_id, **kwargs):
         user = self.user_repo.update(user_id, **kwargs)
         if user:
-            print(f"Użytkownik {user.username} został zaktualizowany.")
             return user
-        else:
-            print(f"Nie znaleziono użytkownika o ID {user_id}.")
 
     # Dodawanie nowej grupy
     def add_group(self, name, description=None):
         try:
             group = self.group_repo.create(name, description)
-            print(f"Grupa {name} została pomyślnie dodana.")
             return group
-        except ValueError as e:
-            print(f"Błąd: {e}")
+        except:
+            return None
 
     # Edycja istniejącej grupy
     def edit_group(self, group_id, **kwargs):
         group = self.group_repo.update(group_id, **kwargs)
         if group:
-            print(f"Grupa {group.name} została zaktualizowana.")
             return group
-        else:
-            print(f"Nie znaleziono grupy o ID {group_id}.")
-
-    # Sprawdzenie grup
-    def check_groups(self):
-        groups = self.group_repo.find()
-        if groups:
-            print("Lista grup:")
-            for group in groups:
-                print(f"- {group.name}: {group.description}")
-        else:
-            print("Brak grup w systemie.")
-
-    # Sprawdzenie użytkowników
-    def check_users(self):
-        users = self.user_repo.find()
-        if users:
-            print("Lista użytkowników:")
-            for user in users:
-                print(f"- {user.username} ({user.role}): {user.email}")
-        else:
-            print("Brak użytkowników w systemie.")

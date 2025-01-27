@@ -119,7 +119,6 @@ class ChangePasswordApi:
 
             user.change_password(new_password)
             flash("Hasło zostało zmienione", "info")
-            print(f'{current_password} | {new_password} | {confirm_password}')
 
         return redirect(url_for('account_info'))
 
