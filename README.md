@@ -1,31 +1,53 @@
 # Aplikacja wspomagająca naukę języków
 
-W obecnej wersji utworzyłem panel do logowania, 
-a także klasę użytkownika, która posłuży nam 
-jako klasa bazowa dla reszty użytkowników (aktorów)
-korzystających z systemu. 
+Projekt aplikacji webowej służącej do wspomagania nauki języków obcych. Interfejs graficzny został zainspirowany designem platformy GitHub.
 
-#### Apka ma wygląd podobny do Githuba.
+<img width="960" height="462" alt="image" src="https://github.com/user-attachments/assets/49ad3519-be2e-492f-978c-769c4403a96a" />
 
-### Aplikacja działa:
-* lokalnie
-* przy wykorzystaniu dockera - trzeba mieć dockera
 
-### Aby uruchomić apkę lokalnie:
-* wchodzimy w plik ze skryptem *app.py*
-* uruchamiamy jak normalny program w Pycharmie
+## Stan obecny
+W aktualnej wersji zaimplementowano:
+- Panel logowania.
+- Bazową klasę użytkownika, która stanowi fundament dla pozostałych ról (aktorów) w systemie.
 
-### Aby uruchomić apkę z Dockera:
-* instalujemy WSL (w wersji 2)
-* instalujemy Dockera (np. Docker desktop)
-* uruchamiamy instancję terminala w Pycharm
+## Środowiska uruchomieniowe
+Aplikację można uruchomić na dwa sposoby:
+- **Lokalnie** (bezpośrednio w środowisku Python).
+- **W kontenerze** (przy wykorzystaniu platformy Docker).
 
-### Korzystanie z aplikacji:
-* uruchamiamy komendą:
-  ```bash
-  docker-compose up --build
-  ```
-  
+---
 
-### Po uruchomieniu, aplikacja jest wystawiona na adresie:
-http://127.0.0.1:5000/
+## Instrukcja uruchomienia
+
+### 1. Uruchomienie lokalne
+Aby uruchomić aplikację w klasycznym środowisku programistycznym (np. PyCharm):
+- Należy otworzyć plik głównego skryptu `app.py`.
+- Uruchomić plik standardowo z poziomu IDE lub wykonując w terminalu poniższe polecenie:
+```
+  python app.py
+ ```
+
+### 2. Uruchomienie przy użyciu platformy Docker
+
+Uruchomienie w kontenerze wymaga odpowiedniego przygotowania środowiska systemowego.
+
+**Wymagania wstępne (dla systemu Windows):**
+
+* Zainstalowany komponent WSL 2 (Windows Subsystem for Linux).
+* Zainstalowane środowisko Docker (np. aplikacja Docker Desktop).
+
+**Kroki uruchomieniowe:**
+
+* Należy uruchomić wiersz poleceń (np. zintegrowany terminal w środowisku PyCharm).
+* Zbudować i uruchomić kontener za pomocą polecenia:
+```bash
+docker-compose up --build
+```
+
+---
+
+## Dostęp do aplikacji
+
+Po poprawnym zainicjowaniu (niezależnie od wybranej metody), aplikacja jest dostępna w przeglądarce internetowej pod adresem:
+
+[http://127.0.0.1:5000/](http://127.0.0.1:5000/)
