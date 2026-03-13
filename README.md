@@ -1,53 +1,59 @@
-# Aplikacja wspomagająca naukę języków
+# Language Learning Web Application
 
-Projekt aplikacji webowej służącej do wspomagania nauki języków obcych. Interfejs graficzny został zainspirowany designem platformy GitHub.
+This repository contains a web-based application designed to facilitate foreign language learning. The graphical user interface (GUI) is heavily inspired by GitHub's design system, providing a clean and familiar user experience.
 
-<img width="960" height="462" alt="image" src="https://github.com/user-attachments/assets/49ad3519-be2e-492f-978c-769c4403a96a" />
-
-
-## Stan obecny
-W aktualnej wersji zaimplementowano:
-- Panel logowania.
-- Bazową klasę użytkownika, która stanowi fundament dla pozostałych ról (aktorów) w systemie.
-
-## Środowiska uruchomieniowe
-Aplikację można uruchomić na dwa sposoby:
-- **Lokalnie** (bezpośrednio w środowisku Python).
-- **W kontenerze** (przy wykorzystaniu platformy Docker).
+<img width="960" height="462" alt="image" src="[https://github.com/user-attachments/assets/49ad3519-be2e-492f-978c-769c4403a96a](https://github.com/user-attachments/assets/49ad3519-be2e-492f-978c-769c4403a96a)" />
 
 ---
 
-## Instrukcja uruchomienia
+## Current Project Status
 
-### 1. Uruchomienie lokalne
-Aby uruchomić aplikację w klasycznym środowisku programistycznym (np. PyCharm):
-- Należy otworzyć plik głównego skryptu `app.py`.
-- Uruchomić plik standardowo z poziomu IDE lub wykonując w terminalu poniższe polecenie:
+The following core features are currently implemented in the latest version:
+
+* **Authentication:** A fully functional login panel.
+* **System Architecture:** A base user class that serves as the architectural foundation for all other roles and actors within the system.
+
+---
+
+## Setup and Installation
+
+The application can be deployed in two ways: locally via a Python environment, or containerized using Docker. Choose the method that best suits your development workflow.
+
+### Option 1: Local Deployment
+
+To run the application directly in a standard development environment (such as PyCharm or a local terminal):
+
+1. Navigate to the root directory of the project.
+2. Execute the main application script using the following command:
+
+```bash
+python app.py
+
 ```
-  python app.py
- ```
 
-### 2. Uruchomienie przy użyciu platformy Docker
+### Option 2: Docker Deployment
 
-Uruchomienie w kontenerze wymaga odpowiedniego przygotowania środowiska systemowego.
+Running the application via Docker ensures a consistent environment but requires appropriate system preparation.
 
-**Wymagania wstępne (dla systemu Windows):**
+**Prerequisites (Windows Users):**
 
-* Zainstalowany komponent WSL 2 (Windows Subsystem for Linux).
-* Zainstalowane środowisko Docker (np. aplikacja Docker Desktop).
+* Windows Subsystem for Linux (WSL 2) must be installed and configured.
+* A Docker environment must be installed (e.g., Docker Desktop).
 
-**Kroki uruchomieniowe:**
+**Execution Steps:**
 
-* Należy uruchomić wiersz poleceń (np. zintegrowany terminal w środowisku PyCharm).
-* Zbudować i uruchomić kontener za pomocą polecenia:
+1. Open your command line interface or the integrated terminal in your IDE.
+2. Build the image and start the container using Docker Compose:
+
 ```bash
 docker-compose up --build
+
 ```
 
 ---
 
-## Dostęp do aplikacji
+## Accessing the Application
 
-Po poprawnym zainicjowaniu (niezależnie od wybranej metody), aplikacja jest dostępna w przeglądarce internetowej pod adresem:
+Upon successful initialization using either of the methods above, the application will be accessible via your web browser at the following local address:
 
 [http://127.0.0.1:5000/](http://127.0.0.1:5000/)
