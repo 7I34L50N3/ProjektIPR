@@ -2,7 +2,7 @@
 
 This repository contains a web-based application designed to facilitate foreign language learning. The graphical user interface (GUI) is heavily inspired by GitHub's design system, providing a clean and familiar user experience.
 
-<img width="960" height="462" alt="image" src="[https://github.com/user-attachments/assets/49ad3519-be2e-492f-978c-769c4403a96a](https://github.com/user-attachments/assets/49ad3519-be2e-492f-978c-769c4403a96a)" />
+<img width="960" height="462" alt="image" src="https://github.com/user-attachments/assets/49ad3519-be2e-492f-978c-769c4403a96a" />
 
 ---
 
